@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "Huggy Challenge API",
+    "_postman_id": "c1234567-abcd-1234-efgh-9876543210ab",
+    "description": "Collection de rotas para o desafio Full-Stack Developer Huggy.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar Clientes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/clients",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "clients"]
+        }
+      }
+    },
+    {
+      "name": "Criar Cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Kelvin Teste\",\n    \"email\": \"kelvin@example.com\",\n    \"phone\": \"+5599999999999\",\n    \"photo\": null,\n    \"age\": 30,\n    \"city\": \"Jericó\",\n    \"state\": \"PB\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/clients",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "clients"]
+        }
+      }
+    },
+    {
+      "name": "Mostrar Cliente por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/clients/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "clients", "1"]
+        }
+      }
+    },
+    {
+      "name": "Atualizar Cliente",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Kelvin Atualizado\",\n    \"email\": \"kelvin.new@example.com\",\n    \"phone\": \"+5598888888888\",\n    \"city\": \"Bahia\",\n    \"state\": \"BA\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/clients/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "clients", "1"]
+        }
+      }
+    },
+    {
+      "name": "Deletar Cliente",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/clients/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "clients", "1"]
+        }
+      }
+    }
+  ]
+}
