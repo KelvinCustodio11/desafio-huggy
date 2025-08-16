@@ -17,3 +17,7 @@ RUN composer install --no-scripts --no-autoloader && composer dump-autoload
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+# Instala o PCOV
+RUN pecl install pcov \
+    && docker-php-ext-enable pcov
