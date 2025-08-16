@@ -2,103 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
-use App\Models\Address;
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
+use App\Services\Contracts\ClientServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
-    // Listar todos os clientes com endereço
-    public function index()
+    protected ClientServiceInterface $clientService;
+
+    public function __construct(ClientServiceInterface $clientService)
     {
-        $clients = Client::with('address')->get();
+        $this->clientService = $clientService;
+    }
+
+    public function index(): JsonResponse
+    {
+        return response()->json($this->clientService->getAllClients());
+    }
+
+    public function store(StoreClientRequest $request): JsonResponse
+    {
+        $client = $this->clientService->createClient($request->validated());
+        return response()->json($client, 201);
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json($this->clientService->getClient($id));
+    }
+
+    public function searchByNameOrPhone(Request $request): JsonResponse
+    {
+        $text = $request->input('text', '');
+        $clients = $this->clientService->searchByNameOrPhone($text);
         return response()->json($clients);
     }
 
-    // Criar novo cliente com endereço
-    public function store(Request $request)
+    public function update(UpdateClientRequest $request, int $id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:clients,email',
-            'phone' => 'nullable|string|max:20',
-            'photo' => 'nullable|string',
-            'age' => 'nullable|integer|min:0',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:2',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        // Criar cliente
-        $client = Client::create($request->only(['name','email','phone','photo','age']));
-
-        // Criar endereço
-        $client->address()->create($request->only(['city','state']));
-
-        return response()->json($client->load('address'), 201);
-    }
-
-    // Mostrar um cliente específico
-    public function show($id)
-    {
-        $client = Client::with('address')->find($id);
-
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
-
+        $client = $this->clientService->updateClient($id, $request->validated());
         return response()->json($client);
     }
 
-    // Atualizar cliente e endereço
-    public function update(Request $request, $id)
+    public function destroy(int $id): JsonResponse
     {
-        $client = Client::with('address')->find($id);
-
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:clients,email,'.$client->id,
-            'phone' => 'nullable|string|max:20',
-            'photo' => 'nullable|string',
-            'age' => 'nullable|integer|min:0',
-            'city' => 'sometimes|required|string|max:255',
-            'state' => 'sometimes|required|string|max:2',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $client->update($request->only(['name','email','phone','photo','age']));
-
-        if ($client->address) {
-            $client->address->update($request->only(['city','state']));
-        } else if ($request->has(['city','state'])) {
-            $client->address()->create($request->only(['city','state']));
-        }
-
-        return response()->json($client->load('address'));
-    }
-
-    // Deletar cliente (endereço é deletado automaticamente)
-    public function destroy($id)
-    {
-        $client = Client::find($id);
-
-        if (!$client) {
-            return response()->json(['message' => 'Client not found'], 404);
-        }
-
-        $client->delete();
-
-        return response()->json(['message' => 'Client deleted successfully']);
+        $this->clientService->deleteClient($id);
+        return response()->json(null, 204);
     }
 }
