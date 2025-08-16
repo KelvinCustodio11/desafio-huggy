@@ -36,6 +36,7 @@ class ClientController extends Controller
     public function searchByNameOrPhone(Request $request): JsonResponse
     {
         $text = $request->input('text', '');
+        $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
         $clients = $this->clientService->searchByNameOrPhone($text);
         return response()->json($clients);
     }
