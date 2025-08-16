@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Client;
 use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Services\Contracts\ClientServiceInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ClientService implements ClientServiceInterface

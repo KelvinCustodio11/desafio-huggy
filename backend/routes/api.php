@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 
 Route::middleware('api')->group(function () {
-    // Define API routes for ClientController
-    Route::apiResource('clients', ClientController::class);
+    Route::prefix('clients')->group(function () {
+        // CRUD de clientes
+        Route::apiResource('/', ClientController::class)
+            ->parameters(['' => 'client']) // ajusta parâmetro vazio
+            ->whereNumber('client');
 
-    // Route for searching clients
-    Route::get('search', [ClientController::class, 'searchByNameOrPhone']);
+        // Rotas extras
+        Route::get('search', [ClientController::class, 'searchByNameOrPhone']);
+    });
 });
