@@ -16,6 +16,9 @@ class Client extends Model
         'phone',
         'photo',
         'age',
+        'huggy_contact_id',
+        'avatar_url',
+        'birthdate'
     ];
 
     public function address() {

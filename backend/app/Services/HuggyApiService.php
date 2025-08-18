@@ -24,10 +24,10 @@ class HuggyApiService implements HuggyApiServiceInterface
 
     public function listContacts(int $page = 1, int $perPage = 100): array
     {
-        // A doc possui seção de paginação; ajuste os nomes de params conforme necessário.
+        // A doc nao possui seção de paginação! TODO: Analisar como poderia otimizar.
         return $this->client()->get('/contacts', [
-            'page' => $page,
-            'perPage' => $perPage,
+            // 'page' => $page,
+            // 'perPage' => $perPage,
         ])->throw()->json();
     }
 }

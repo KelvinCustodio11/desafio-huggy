@@ -40,14 +40,17 @@ class HuggyAuthController extends Controller
 
         // Monte esses campos conforme a resposta do /agents/profile
         $huggyUserId = (string) data_get($profile, 'id');
-        $huggyCompanyId = (string) data_get($profile, 'companyId');
+        $huggyCompanyId = (string) data_get($profile, 'companyID');
+        $huggyUserEmail = (string) data_get($profile, 'email');
 
         // Cria/atualiza user local
         $user = User::updateOrCreate(
-            ['huggy_user_id' => $huggyUserId],
+            ['email' => $huggyUserEmail, 'huggy_user_id' => $huggyUserId],
             [
                 'name' => data_get($profile, 'name', 'Huggy Agent'),
-                'email' => data_get($profile, 'email'),
+                'email' => $huggyUserEmail,
+                'password' => 'password',//remover posteriormente ou usar outra estrategia
+                'huggy_user_id' => $huggyUserId,
                 'huggy_company_id' => $huggyCompanyId,
                 'huggy_access_token' => $access,
                 'huggy_refresh_token' => $refresh,
@@ -55,7 +58,7 @@ class HuggyAuthController extends Controller
             ]
         );
 
-        // Autentica e emite token da sua API (Sanctum)
+        // Autentica e emite token da API (Sanctum)
         Auth::login($user);
         $apiToken = $user->createToken('api')->plainTextToken;
 

@@ -20,7 +20,7 @@ class HuggySyncController extends Controller
         $page = 1;
         $imported = 0;
         while (true) {
-            $data = $api->listContacts($page, 100);
+            $data = $api->listContacts($page, 100);//TODO: nao tem paginacao, analisar otimizacao
             $items = is_array($data) ? $data : data_get($data, 'data', []);
             if (empty($items)) break;
 
@@ -34,18 +34,26 @@ class HuggySyncController extends Controller
                 $photo = data_get($c, 'photo');
                 $birth = data_get($c, 'birthDate');
 
-                Client::updateOrCreate(
-                    ['huggy_contact_id' => $id],
+                $client = Client::updateOrCreate(
+                    ['huggy_contact_id' => $id, 'email' => $email],
                     [
+                        'huggy_contact_id' => $id,
                         'name' => $name,
                         'email' => $email,
                         'phone' => $phone,
-                        'city' => $city,
-                        'state' => $state,
                         'avatar_url' => $photo,
                         'birthdate' => $birth ? date('Y-m-d', strtotime($birth)) : null,
                     ]
                 );
+                if ($client) {
+                    $client->address()->updateOrCreate(
+                        ['client_id' => $client->id],
+                        [
+                            'city' => $city,
+                            'state' => $state,
+                        ]
+                    );
+                }
                 $imported++;
             }
 
