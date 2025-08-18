@@ -12,5 +12,8 @@ Route::middleware('api')->group(function () {
 
         // Rotas extras
         Route::get('search', [ClientController::class, 'searchByNameOrPhone']);
+        // Route::get('report/insights', [ClientController::class, 'report']);
+        // Route::post('{client}/call', [ClientController::class, 'call'])
+        //     ->whereNumber('client');
     });
 });
