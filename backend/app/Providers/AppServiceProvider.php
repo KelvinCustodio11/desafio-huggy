@@ -7,6 +7,8 @@ use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Repositories\ClientRepository;
 use App\Services\Contracts\ClientServiceInterface;
 use App\Services\ClientService;
+use App\Services\Contracts\HuggyOAuthServiceInterface;
+use App\Services\HuggyOAuthService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ClientRepositoryInterface::class,
             ClientRepository::class
+        );
+        $this->app->bind(
+            HuggyOAuthServiceInterface::class,
+            HuggyOAuthService::class
         );
     }
 
