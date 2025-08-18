@@ -20,12 +20,11 @@ Route::middleware('api')->group(function () {
 
     Route::prefix('auth')->group(function () {
         Route::prefix( 'huggy')->group(function () {
-            Route::get('/redirect', [HuggyAuthController::class, 'redirect']);
+            Route::get('/login', [HuggyAuthController::class, 'redirect']);
             Route::get('/callback', [HuggyAuthController::class, 'callback']);
-
         });
     });
 
-    Route::post('/huggy/sync', \App\Http\Controllers\HuggySyncController::class)
+    Route::get('/huggy/contacts/sync', \App\Http\Controllers\HuggySyncController::class)
         ->middleware('auth:sanctum');
 });
