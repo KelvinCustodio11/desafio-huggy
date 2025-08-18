@@ -22,6 +22,7 @@ class HuggyAuthController extends Controller
         ]);
     }
 
+    //TODO: tendo muita responsabilidades, aplicar testes e entao extrair para services e melhorar entendimento.
     public function callback(Request $request)
     {
         $code = $request->query('code');
