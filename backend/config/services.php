@@ -42,4 +42,8 @@ return [
         'auth_base'     => env('HUGGY_AUTH_BASE', 'https://auth.huggy.app'),
         'api_base'      => env('HUGGY_API_BASE',  'https://api.huggy.app/v3'),
     ],
+
+    'client' => [
+        'callback_redirect'  => env('CLIENT_CALLBACK_REDIRECT', 'http://localhost:5173/callback'),
+    ],
 ];

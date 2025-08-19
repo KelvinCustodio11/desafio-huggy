@@ -28,6 +28,7 @@ Route::middleware('api')->group(function () {
         Route::prefix( 'huggy')->group(function () {
             Route::get('/login', [HuggyAuthController::class, 'redirect'])->name('login');
             Route::get('/callback', [HuggyAuthController::class, 'callback']);
+            Route::post('/exchange', [HuggyAuthController::class, 'exchangeCode']);
         });
     });
 });

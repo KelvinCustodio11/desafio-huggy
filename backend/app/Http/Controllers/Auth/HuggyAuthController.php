@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\HuggyApiService;
 use App\Services\HuggyOAuthService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class HuggyAuthController extends Controller
 {
@@ -62,9 +63,32 @@ class HuggyAuthController extends Controller
         Auth::login($user);
         $apiToken = $user->createToken('api')->plainTextToken;
 
+
+        // Redireciona para o Vue com o token TODO: refatorar essa estrtegia pois nao e seguro!
+        ///return redirect()->away(path: 'http://localhost:5173/callback?token=' . $apiToken);
+
+        $code = Str::uuid()->toString();
+        Cache::put("auth_code_{$code}", $apiToken, now()->addMinute());
+        return redirect()->away(config('services.client.callback_redirect') . '?code=' . $code);
+
+        // return response()->json([
+        //     'message' => 'Authenticated with Huggy',
+        //     'user' => $user->only(['id','name','email','huggy_user_id','huggy_company_id']),
+        //     'api_token' => $apiToken,
+        // ]);
+    }
+
+    public function exchangeCode(Request $request)
+    {
+        $code = $request->input('code');
+        $apiToken = Cache::pull("auth_code_{$code}"); // Consome o código uma vez só
+
+        if (!$apiToken) {
+            return response()->json(['error' => 'Código inválido ou expirado'], 400);
+        }
+
         return response()->json([
             'message' => 'Authenticated with Huggy',
-            'user' => $user->only(['id','name','email','huggy_user_id','huggy_company_id']),
             'api_token' => $apiToken,
         ]);
     }
