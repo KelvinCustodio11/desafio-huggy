@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class HuggySyncController extends Controller
 {
-    //TODO: implementar validação de dados, testes e extrair para melhorar responsabilidades.
     public function __invoke(Request $request)
     {
         $user = $request->user(); // requer Sanctum/bearer
@@ -25,36 +24,10 @@ class HuggySyncController extends Controller
             if (empty($items)) break;
 
             foreach ($items as $c) {
-                $id = (string) data_get($c, 'id');
-                $name = data_get($c, 'name');
-                $email = data_get($c, 'email');
-                $phone = data_get($c, 'phone') ?? data_get($c, 'mobile');
-                $city = data_get($c, 'city');
-                $state = data_get($c, 'state');
-                $photo = data_get($c, 'photo');
-                $birth = data_get($c, 'birthDate');
-
-                $client = Client::updateOrCreate(
-                    ['huggy_contact_id' => $id, 'email' => $email],
-                    [
-                        'huggy_contact_id' => $id,
-                        'name' => $name,
-                        'email' => $email,
-                        'phone' => $phone,
-                        'avatar_url' => $photo,
-                        'birthdate' => $birth ? date('Y-m-d', strtotime($birth)) : null,
-                    ]
-                );
+                $client = $this->createOrUpdateClientFromHuggyContact($c);
                 if ($client) {
-                    $client->address()->updateOrCreate(
-                        ['client_id' => $client->id],
-                        [
-                            'city' => $city,
-                            'state' => $state,
-                        ]
-                    );
+                    $imported++;
                 }
-                $imported++;
             }
 
             // pare se não tiver mais; ajuste se a API devolver meta de paginação, melhorar isso depois
@@ -63,5 +36,66 @@ class HuggySyncController extends Controller
         }
 
         return response()->json(['imported' => $imported]);
+    }
+
+    public function syncClientWebhook(Request $request)
+    {
+        $data = $request->json()->all();
+
+        if (empty($data)) {
+            return response()->json(['error' => 'No data provided'], 400);
+        }
+
+        //pode refatorar para usar create ou update do clientService por meio do $data['event'] = createdCustomer ou updatedCustomer
+        $customerData = $data['messages']['createdCustomer'][0] ?? $data['messages']['updatedCustomer'][0] ?? [];
+        $client = $this->createOrUpdateClientFromHuggyContact($customerData);
+        if ($client) {
+            return response()->json(['imported' => 1]);
+        }
+
+        return response()->json(['imported' => 0]);
+    }
+
+    //TODO: implementar validação de dados, testes e extrair para melhorar responsabilidades.
+    /**
+     * Cria ou atualiza um cliente e seu endereço a partir dos dados do contato Huggy.
+     *
+     * @param array $c
+     * @return \App\Models\Client
+     */
+    protected function createOrUpdateClientFromHuggyContact(array $c)
+    {
+        $id = (string) data_get($c, 'id');
+        $name = data_get($c, 'name');
+        $email = data_get($c, 'email');
+        $phone = data_get($c, 'phone') ?? data_get($c, 'mobile');
+        $city = data_get($c, 'city');
+        $state = data_get($c, 'state');
+        $photo = data_get($c, 'photo');
+        $birth = data_get($c, 'birthDate');
+
+        $client = Client::updateOrCreate(
+            ['huggy_contact_id' => $id, 'email' => $email],
+            [
+                'huggy_contact_id' => $id,
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'avatar_url' => $photo,
+                'birthdate' => $birth ? date('Y-m-d', strtotime($birth)) : null,
+            ]
+        );
+
+        if ($client) {
+            $client->address()->updateOrCreate(
+                ['client_id' => $client->id],
+                [
+                    'city' => $city,
+                    'state' => $state,
+                ]
+            );
+        }
+
+        return $client;
     }
 }
