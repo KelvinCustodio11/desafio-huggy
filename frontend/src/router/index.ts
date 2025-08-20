@@ -1,14 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import CallbackView from '@/views/CallbackView.vue'
 import ContactsView from '@/views/ContactsView.vue'
 import ReportsView from '@/views/ReportsView.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: '/login', component: LoginView },
   { path: '/callback', component: CallbackView },
   { path: '/contacts', component: ContactsView, meta: { requiresAuth: true } },
-  { path: '/dashboard', component: ReportsView, meta: { requiresAuth: true } },
+  { path: '/reports', component: ReportsView, meta: { requiresAuth: true }, name: 'reports' },
   { path: '/', redirect: '/contacts' }
 ]
 
