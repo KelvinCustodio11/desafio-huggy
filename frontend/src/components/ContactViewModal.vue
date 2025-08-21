@@ -1,24 +1,17 @@
 <template>
   <BaseModal v-model="open">
     <div class="view-header">
-      <div class="avatar">
-        <template v-if="contact.photo">
-          <img :src="contact.photo" alt="Avatar" />
-        </template>
-        <template v-else>
-          <span class="avatar-initials">{{ initials }}</span>
-        </template>
-      </div>
+      <ContactAvatar :photo="contact.photo" :initials="initials" />
       <span class="view-title">{{ contact.name }}</span>
       <div class="view-actions">
         <button class="icon-btn" @click="$emit('delete', contact)" title="Deletar">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M3 6h18" stroke="#444" stroke-width="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6h12Z" stroke="#444" stroke-width="2"/></svg>
+          <IconDelete />
         </button>
         <button class="icon-btn" @click="$emit('edit', contact)" title="Editar">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M4 21h17" stroke="#444" stroke-width="2"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5Z" stroke="#444" stroke-width="2"/></svg>
+          <IconEdit />
         </button>
         <button class="icon-btn" @click="close" title="Fechar">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6" stroke="#444" stroke-width="2" stroke-linecap="round"/></svg>
+          <IconClose />
         </button>
       </div>
     </div>
@@ -36,6 +29,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import BaseModal from './ui/BaseModal.vue'
+import IconDelete from './icons/IconDelete.vue'
+import IconEdit from './icons/IconEdit.vue'
+import IconClose from './icons/IconClose.vue'
+import ContactAvatar from './ContactAvatar.vue'
 
 interface Contact {
   name: string

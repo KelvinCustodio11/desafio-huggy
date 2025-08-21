@@ -46,7 +46,7 @@ async function handleDelete() {
   if (!props.contact?.id) return
   loading.value = true
   try {
-    await ContactsService.delete(Number(props.contact.id))
+    await ContactsService.delete(Number(props.contact.id)) //TODO: LEVAR LOGICA PARA VIEW???
     emit('deleted', props.contact)
     close()
   } catch {

@@ -1,10 +1,11 @@
 <template>
   <button class="add-btn">
-    <span class="plus-icon">+</span> Adicionar contato
+    <IconPlus />Adicionar contato
   </button>
 </template>
 
 <script setup lang="ts">
+import IconPlus from './icons/IconPlus.vue'
 </script>
 
 <style scoped>
@@ -23,8 +24,5 @@
 }
 .add-btn:hover {
   background: #2f2499;
-}
-.plus-icon {
-  font-size: 1.4em;
 }
 </style>

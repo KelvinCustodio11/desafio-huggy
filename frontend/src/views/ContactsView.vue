@@ -3,21 +3,22 @@
     <h1 class="contacts-title">Contatos</h1>
     <div class="contacts-container">
       <div class="contacts-header">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Buscar contato"
-          v-model="search"
-        />
+        <div style="position: relative; display: flex; align-items: center;">
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Buscar contato"
+            v-model="search"
+            style="padding-left: 38px;"
+          />
+          <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa;">
+            <IconSearch />
+          </span>
+        </div>
         <div style="display: flex; gap: 12px;">
           <AddContactButton @click="openCreateModal" />
           <button class="report-btn" @click="generateReport">
-            <svg class="report-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M3 3v18h18" stroke="#3F37C9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="7" y="13" width="2" height="5" fill="#3F37C9"/>
-              <rect x="11" y="9" width="2" height="9" fill="#3F37C9"/>
-              <rect x="15" y="5" width="2" height="13" fill="#3F37C9"/>
-            </svg>
+            <IconReport />
           </button>
         </div>
       </div>
@@ -40,13 +41,13 @@
       <ContactModal
         v-model="showCreateModal"
         title="Adicionar novo contato"
-        @save="fetchContacts"
+        @save="createContact"
       />
       <ContactModal
         v-model="showEditModal"
         :contact="editingContact ? { ...editingContact, email: editingContact.email ?? '' } : undefined"
         title="Editar contato"
-        @save="fetchContacts"
+        @save="editContact"
         @update:modelValue="val => { if (!val) closeEditModal() }"
       />
       <ContactViewModal
@@ -59,7 +60,7 @@
           state: viewingContact.state ?? ''
         } : undefined"
         @edit="openEditModal"
-        @delete="deleteContact"
+        @delete="openDeleteModal"
       />
       <ContactDeleteModal
         v-model="showDeleteModal"
@@ -80,6 +81,8 @@ import { useRouter } from 'vue-router'
 import ContactModal from '@/components/ContactModal.vue'
 import ContactViewModal from '@/components/ContactViewModal.vue'
 import ContactDeleteModal from '@/components/ContactDeleteModal.vue'
+import IconReport from '@/components/icons/IconReport.vue'
+import IconSearch from '@/components/icons/IconSearch.vue'
 
 interface Contact extends BaseContact {
   photo?: string
@@ -99,6 +102,21 @@ const deletingContact = ref<Contact | null>(null)
 const fetchContacts = async () => {
   const { data } = await ContactsService.list()
   contacts.value = data
+}
+const createContact = async (contact: Contact) => {
+  const { data } = await ContactsService.create(contact)
+  contacts.value.push(data)
+}
+const editContact = async (contact: Contact) => {
+  const { data } = await ContactsService.update(contact.id, contact)
+  const index = contacts.value.findIndex(c => c.id === contact.id)
+  if (index !== -1) {
+    contacts.value[index] = data
+  }
+}
+const deleteContact = async (contact: Contact) => {
+  await ContactsService.delete(contact.id)
+  contacts.value = contacts.value.filter(c => c.id !== contact.id)
 }
 
 onMounted(fetchContacts)
@@ -150,10 +168,6 @@ function openDeleteModal(contact: Contact) {
 function closeDeleteModal() {
   showDeleteModal.value = false
   deletingContact.value = null
-}
-function deleteContact(contact: Contact) {
-  // lógica para deletar
-  showViewModal.value = false
 }
 </script>
 
