@@ -2,7 +2,12 @@
   <table class="contacts-table">
     <thead>
       <tr>
-        <th>Nome<span class="icon-down"><IconDown /></span></th>
+        <th @click="$emit('toggleOrder')" style="cursor:pointer;">
+          Nome
+          <span class="icon-down">
+            <component :is="order === 'asc' ? IconUp : IconDown" />
+          </span>
+        </th>
         <th>Email</th>
         <th>Telefone</th>
         <th class="actions-header"></th>
@@ -66,10 +71,11 @@ import ContactAvatar from './ContactAvatar.vue'
 import IconEdit from './icons/IconEdit.vue'
 import IconDelete from './icons/IconDelete.vue'
 import IconDown from './icons/IconDown.vue'
+import IconUp from './icons/IconUp.vue'
 import ContactsEmpty from './ContactsEmpty.vue'
 import Separator from './Separator.vue'
 
-defineProps<{
+const props = defineProps<{
   contacts: Array<{
     id: number|string
     name: string
@@ -77,8 +83,11 @@ defineProps<{
     phone: string
     photo?: string
     disabled?: boolean
-  }>
+  }>,
+  order: 'asc' | 'desc'
 }>()
+
+const emit = defineEmits(['toggleOrder'])
 
 const pressed = ref(false)
 const focused = ref(false)

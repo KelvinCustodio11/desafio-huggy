@@ -22,7 +22,9 @@
         </div>
       </div>
       <ContactTable
-        :contacts="filteredContacts"
+        :contacts="sortedContactsWithRequiredFields"
+        :order="order"
+        @toggleOrder="toggleOrder"
         @edit="openEditModal"
         @delete="openDeleteModal"
         @view="openViewModal"
@@ -87,6 +89,7 @@ const showDeleteModal = ref(false)
 const editingContact = ref<Contact | null>(null)
 const viewingContact = ref<Contact | null>(null)
 const deletingContact = ref<Contact | null>(null)
+const order = ref<'asc' | 'desc'>('asc')
 
 const fetchContacts = async () => {
   const { data } = await ContactsService.list()
@@ -127,6 +130,29 @@ const filteredContacts = computed(() =>
       disabled: contact.disabled
     }))
 )
+
+const sortedContacts = computed(() => {
+  return [...filteredContacts.value].sort((a, b) => {
+    if (order.value === 'asc') {
+      return a.name.localeCompare(b.name)
+    } else {
+      return b.name.localeCompare(a.name)
+    }
+  })
+})
+
+// Ensure email and phone are always present for ContactTable
+const sortedContactsWithRequiredFields = computed(() =>
+  sortedContacts.value.map(contact => ({
+    id: contact.id,
+    name: contact.name,
+    email: contact.email ?? '',
+    phone: contact.phone ?? '',
+    photo: contact.photo,
+    disabled: contact.disabled
+  }))
+)
+
 const router = useRouter()
 const generateReport = () => {
   router.push({ name: 'reports' })
@@ -157,6 +183,9 @@ function openDeleteModal(contact: Contact) {
 function closeDeleteModal() {
   showDeleteModal.value = false
   deletingContact.value = null
+}
+function toggleOrder() {
+  order.value = order.value === 'asc' ? 'desc' : 'asc'
 }
 </script>
 
