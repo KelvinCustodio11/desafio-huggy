@@ -2,7 +2,7 @@
   <table class="contacts-table">
     <thead>
       <tr>
-        <th>Nome<span class="icon-down"><IconDown/></span></th>
+        <th>Nome<span class="icon-down"><IconDown /></span></th>
         <th>Email</th>
         <th>Telefone</th>
         <th class="actions-header"></th>
@@ -24,7 +24,6 @@
         :key="contact.id"
         class="contact-row"
         :class="{ pressed: false, focused: false, disabled: contact.disabled }"
-        tabindex="0"
         @mousedown="pressed = true"
         @mouseup="pressed = false"
         @mouseleave="pressed = false"
@@ -33,7 +32,7 @@
         @click="$emit('view', contact)"
       >
         <td>
-          <div style="display: flex; align-items: center;">
+          <div style="display: flex;">
             <ContactAvatar :photo="contact.photo" :initials="getInitials(contact.name)" />
             <div class="contact-name" :class="{ disabled: contact.disabled }">
               {{ contact.name }}
@@ -47,12 +46,14 @@
           {{ contact.phone }}
         </td>
         <td class="actions" v-if="!contact.disabled">
-          <button class="icon-btn" title="Editar" @click.stop="$emit('edit', contact)">
-            <IconEdit />
-          </button>
-          <button class="icon-btn" title="Excluir" @click.stop="$emit('delete', contact)">
-            <IconDelete />
-          </button>
+          <div class="actions-inner">
+            <button class="icon-btn" title="Editar" @click.stop="$emit('edit', contact)">
+              <IconEdit />
+            </button>
+            <button class="icon-btn" title="Excluir" @click.stop="$emit('delete', contact)">
+              <IconDelete />
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -94,6 +95,7 @@ function getInitials(name: string) {
 th, td {
   text-align: left;
   padding: 8px 12px;
+  font-size: small;
 }
 thead th {
   font-weight: 500;
@@ -107,7 +109,7 @@ thead th {
   border-radius: 12px;
   transition: background 0.2s;
   outline: none;
-  height: 60px;
+  height: 20px;
 }
 .contact-row:hover {
   background: #f5f5ff;
@@ -120,6 +122,14 @@ thead th {
   pointer-events: none;
   opacity: 0.6;
 }
+.contact-row td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.contact-row td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
 .contact-name {
   flex: 2;
   min-width: 120px;
@@ -127,7 +137,7 @@ thead th {
   font-weight: 400;
   display: flex;
   align-items: center;
-  gap: 8px;
+  margin-left:8px;
 }
 .contact-email {
   min-width: 180px;
@@ -137,11 +147,6 @@ thead th {
 }
 .separator-row {
   padding: 0
-}
-.actions {
-  display: flex;
-  gap: 8px;
-  margin-left: 16px;
 }
 .icon-down {
   display: inline-flex;
@@ -163,8 +168,22 @@ thead th {
 .icon-btn:hover {
   background: #f0f0f0;
 }
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
 .actions-header {
   width: 80px;
+}
+.actions {
+  text-align: center;
+  vertical-align: middle;
+}
+.actions-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 .disabled {
   color: #bbb !important;

@@ -18,13 +18,8 @@ const props = defineProps<{
 
 <style scoped>
 .avatar {
-  margin-left: 16px;
   width: 40px;
   height: 40px;
-  margin-right: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .avatar img {
   width: 40px;
