@@ -36,7 +36,7 @@ const props = defineProps<{
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #f8f7fd;
   color: #3F37C9;
   display: flex;
   align-items: center;

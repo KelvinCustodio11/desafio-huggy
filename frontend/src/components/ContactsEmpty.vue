@@ -4,7 +4,7 @@
       <img src="@/assets/empty-book.png" alt="Sem contatos" width="120" height="120" />
     </div>
     <div class="empty-text">Ainda não há contatos</div>
-    <AddContactButton />
+    <AddContactButton @click="$emit('openCreateModal')" />
   </div>
 </template>
 

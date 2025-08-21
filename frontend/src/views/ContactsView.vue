@@ -1,17 +1,16 @@
 <template>
   <div class="contacts-bg">
-    <h1 class="contacts-title">Contatos</h1>
+    <h2 class="contacts-title">Contatos</h2>
     <div class="contacts-container">
       <div class="contacts-header">
-        <div style="position: relative; display: flex; align-items: center;">
+        <div class="body-2 search">
           <input
             class="search-input"
             type="text"
             placeholder="Buscar contato"
             v-model="search"
-            style="padding-left: 38px;"
           />
-          <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa;">
+          <span class="search-icon">
             <IconSearch />
           </span>
         </div>
@@ -22,22 +21,13 @@
           </button>
         </div>
       </div>
-      <div class="contacts-table-header">
-        <span class="col-name">Nome</span>
-        <span class="col-email">Email</span>
-        <span class="col-phone">Telefone</span>
-      </div>
-      <ContactsEmpty v-if="filteredContacts.length === 0" />
-      <div v-else class="contacts-list">
-        <ContactRow
-          v-for="contact in filteredContacts"
-          :key="contact.id"
-          :contact="contact"
-          @view="openViewModal"
-          @edit="openEditModal"
-          @delete="openDeleteModal"
-        />
-      </div>
+      <ContactTable
+        :contacts="filteredContacts"
+        @edit="openEditModal"
+        @delete="openDeleteModal"
+        @view="openViewModal"
+        @create="openCreateModal"
+      />
       <ContactModal
         v-model="showCreateModal"
         title="Adicionar novo contato"
@@ -74,8 +64,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { ContactsService, type Contact as BaseContact } from '@/services/contacts'
-import ContactRow from '@/components/ContactRow.vue'
-import ContactsEmpty from '@/components/ContactsEmpty.vue'
 import AddContactButton from '@/components/AddContactButton.vue'
 import { useRouter } from 'vue-router'
 import ContactModal from '@/components/ContactModal.vue'
@@ -83,6 +71,7 @@ import ContactViewModal from '@/components/ContactViewModal.vue'
 import ContactDeleteModal from '@/components/ContactDeleteModal.vue'
 import IconReport from '@/components/icons/IconReport.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
+import ContactTable from '@/components/ContactTable.vue'
 
 interface Contact extends BaseContact {
   photo?: string
@@ -174,18 +163,15 @@ function closeDeleteModal() {
 <style scoped>
 .contacts-bg {
   min-height: 100vh;
-  background: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
 }
 .contacts-title {
-  font-size: 1.5rem;
-  font-weight: 400;
-  color: #222;
+  color: #262626;
   margin-bottom: 10px;
-  width: 930px;
+  width: 100%;
   text-align: left;
 }
 .contacts-container {
@@ -199,7 +185,6 @@ function closeDeleteModal() {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 .contacts-header {
   display: flex;
@@ -223,6 +208,17 @@ function closeDeleteModal() {
 .add-btn:hover {
   background: #2f2499;
 }
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 55%;
+  transform: translateY(-50%);
+}
 .plus-icon {
   font-size: 1.4em;
 }
@@ -230,39 +226,36 @@ function closeDeleteModal() {
   margin-bottom: 8px;
 }
 .search-input {
-  width: 320px;
   padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  font-size: 1rem;
-  background: #fafafa;
+  padding-left: 38px;
+  background-color: #f8f8f8;
+}
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 .contacts-table-header {
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #e1e1e1;
-  color: #888;
-  font-size: 1rem;
-  font-weight: 500;
-  gap: 0;
+  /* display: flex; */
+  padding: 8px 18px;
+  color: #505050;
 }
 .col-name {
-  flex: 2;
+  width: 30%;
   min-width: 120px;
 }
 .col-email {
-  flex: 2;
+  width: 35%;
   min-width: 180px;
 }
 .col-phone {
-  flex: 1;
+  width: 20%;
   min-width: 120px;
 }
-.contacts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.col-action {
+  width: 15%;
+  min-width: 120px;
 }
 .contact-row {
   display: flex;
