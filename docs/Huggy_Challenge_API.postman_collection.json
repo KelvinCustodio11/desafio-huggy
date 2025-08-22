@@ -1,92 +1,376 @@
 {
-  "info": {
-    "name": "Huggy Challenge API",
-    "_postman_id": "c1234567-abcd-1234-efgh-9876543210ab",
-    "description": "Collection de rotas para o desafio Full-Stack Developer Huggy.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Listar Clientes",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/clients",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "clients"]
-        }
-      }
-    },
-    {
-      "name": "Criar Cliente",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"name\": \"Kelvin Teste\",\n    \"email\": \"kelvin@example.com\",\n    \"phone\": \"+5599999999999\",\n    \"photo\": null,\n    \"age\": 30,\n    \"city\": \"Jericó\",\n    \"state\": \"PB\"\n}"
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/clients",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "clients"]
-        }
-      }
-    },
-    {
-      "name": "Mostrar Cliente por ID",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/clients/1",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "clients", "1"]
-        }
-      }
-    },
-    {
-      "name": "Atualizar Cliente",
-      "request": {
-        "method": "PUT",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"name\": \"Kelvin Atualizado\",\n    \"email\": \"kelvin.new@example.com\",\n    \"phone\": \"+5598888888888\",\n    \"city\": \"Bahia\",\n    \"state\": \"BA\"\n}"
-        },
-        "url": {
-          "raw": "http://localhost:8080/api/clients/1",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "clients", "1"]
-        }
-      }
-    },
-    {
-      "name": "Deletar Cliente",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:8080/api/clients/1",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "8080",
-          "path": ["api", "clients", "1"]
-        }
-      }
-    }
-  ]
+	"info": {
+		"_postman_id": "5814192d-b3f2-49c4-b294-04eb46853ffd",
+		"name": "Huggy + Laravel API",
+		"description": "Collection para testar a API Laravel integrada com Huggy.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15488035"
+	},
+	"item": [
+		{
+			"name": "CRUD client API",
+			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kelvin Teste\",\n    \"email\": \"kelvincustodio111@example.com\",\n    \"phone\": \"+5583999047246\",\n    \"photo\": null,\n    \"age\": 30,\n    \"city\": \"Jerico\",\n    \"state\": \"PB\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kelvin Atualizado\",\n    \"email\": \"kelvin.new@example.com\",\n    \"phone\": \"+5598888888888\",\n    \"city\": \"Bahia\",\n    \"state\": \"BA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/clients/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/clients/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mostrar Cliente por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/clients/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Contato",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/clients/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login Huggy OAuth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/huggy/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"huggy",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Contatos (Huggy → Sync BD)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "12|aymIFbSiCIcNXQOaspAntKYEPHiAJOdixYru6qEQd15ea500",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/huggy/contacts/sync",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"huggy",
+						"contacts",
+						"sync"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Contatos Api Huggy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjA1NzY3MWQ1MjFhOWFmY2VkMGEyOThiNjYwYTNjMTY0MmVhN2UxNTBjOGFkMjdlMGMwNGQwMzIyODdlNjE1NDU4Y2ZmNDNhZjY2ZWU0OTUwIn0.eyJhdWQiOiJBUFAtNDY3ZWZmMGYtY2MyMi00ZmI0LWI4NTgtMjg0MjI1OTQwMTZkIiwianRpIjoiMDU3NjcxZDUyMWE5YWZjZWQwYTI5OGI2NjBhM2MxNjQyZWE3ZTE1MGM4YWQyN2UwYzA0ZDAzMjI4N2U2MTU0NThjZmY0M2FmNjZlZTQ5NTAiLCJpYXQiOjE3NTU1NDc0MjgsIm5iZiI6MTc1NTU0NzQyOCwiZXhwIjoxNzcxNDQ1MDI3LCJzdWIiOiIxNzA3MTUiLCJzY29wZXMiOlsiaW5zdGFsbF9hcHAiLCJyZWFkX2FnZW50X3Byb2ZpbGUiXX0.Yfj9oelja9b1AURXndLTEeXZEQh90VnKsz58ujKSKdDd-4Xv15kmXhHc5eVIMfd71FFd2Zw3PaBAwE4HYwHBy8plDejtLLSLx1FvF6ESjUP70RBPO7lkHLO8MAdUsi86EcbW84pDSGTWoEapoL2ws7rkDcwYjwZJWusRY7j49Xg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.huggy.app/v3/contacts",
+					"protocol": "https",
+					"host": [
+						"api",
+						"huggy",
+						"app"
+					],
+					"path": [
+						"v3",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Receber Contato Criado Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"time\": 1722277423,\n  \"messages\": {\n    \"createdCustomer\": [\n      {\n        \"id\": 217806,\n        \"name\": \"John Doe1\",\n        \"mobile\": null,\n        \"phone\": null,\n        \"email\": \"teste@teste.com\",\n        \"photo\": \"https://c.pzw.io/img/avatar-user-boy.jpg\",\n        \"custom_fields\": {},\n        \"organizations\": [\n          {\n            \"id\": 16146,\n            \"name\": \"DCS - Brasil\"\n          }\n        ],\n        \"groups\": [\n          {\n            \"id\": 12,\n            \"name\": \"DCS\"\n          }\n        ],\n        \"company\": {\n          \"id\": 1\n        }\n      }\n    ]\n  },\n  \"token\": \"e45c51f6c888f21c9d3fa645dd3e8233\"\n}"
+				},
+				"url": {
+					"raw": "https://3feb64d8f5da.ngrok-free.app/api/huggy/contacts/webhook",
+					"protocol": "https",
+					"host": [
+						"3feb64d8f5da",
+						"ngrok-free",
+						"app"
+					],
+					"path": [
+						"api",
+						"huggy",
+						"contacts",
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://auth.huggy.app/oauth/authorize?scope=install_app+read_agent_profile&response_type=code&redirect_uri=https%3A%2F%2F3feb64d8f5da.ngrok-free.app%2Fapi%2Fauth%2Fhuggy%2Fcallback&client_id=APP-467eff0f-cc22-4fb4-b858-28422594016d",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://auth.huggy.app/oauth/authorize?scope=install_app+read_agent_profile&response_type=code&redirect_uri=https%3A%2F%2F3feb64d8f5da.ngrok-free.app%2Fapi%2Fauth%2Fhuggy%2Fcallback&client_id=APP-467eff0f-cc22-4fb4-b858-28422594016d",
+					"protocol": "https",
+					"host": [
+						"auth",
+						"huggy",
+						"app"
+					],
+					"path": [
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "scope",
+							"value": "install_app+read_agent_profile"
+						},
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https%3A%2F%2F3feb64d8f5da.ngrok-free.app%2Fapi%2Fauth%2Fhuggy%2Fcallback"
+						},
+						{
+							"key": "client_id",
+							"value": "APP-467eff0f-cc22-4fb4-b858-28422594016d"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost/api"
+		}
+	]
 }
