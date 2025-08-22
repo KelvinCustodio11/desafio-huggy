@@ -24,6 +24,7 @@
       <ContactTable
         :contacts="sortedContactsWithRequiredFields"
         :order="order"
+        :loading="loading"
         @toggleOrder="toggleOrder"
         @edit="openEditModal"
         @delete="openDeleteModal"
@@ -90,10 +91,16 @@ const editingContact = ref<Contact | null>(null)
 const viewingContact = ref<Contact | null>(null)
 const deletingContact = ref<Contact | null>(null)
 const order = ref<'asc' | 'desc'>('asc')
+const loading = ref(false)
 
 const fetchContacts = async () => {
-  const { data } = await ContactsService.list()
-  contacts.value = data
+  loading.value = true
+  try {
+    const { data } = await ContactsService.list()
+    contacts.value = data
+  } finally {
+    loading.value = false
+  }
 }
 const createContact = async (contact: Contact) => {
   const { data } = await ContactsService.create(contact)

@@ -19,7 +19,13 @@
       </td>
     </tr>
     <tbody>
-      <tr v-if="contacts.length === 0">
+      <tr v-if="loading">
+        <td colspan="4" style="text-align: center; padding: 20px;">
+          <Loader />
+          <span style="color: #505050; font-size: small;">Carregando</span>
+        </td>
+      </tr>
+      <tr v-else-if="contacts.length === 0">
         <td colspan="4">
           <ContactsEmpty @openCreateModal="$emit('create')" />
         </td>
@@ -74,6 +80,7 @@ import IconDown from './icons/IconDown.vue'
 import IconUp from './icons/IconUp.vue'
 import ContactsEmpty from './ContactsEmpty.vue'
 import Separator from './Separator.vue'
+import Loader from './Loader.vue'
 
 const props = defineProps<{
   contacts: Array<{
@@ -84,7 +91,8 @@ const props = defineProps<{
     photo?: string
     disabled?: boolean
   }>,
-  order: 'asc' | 'desc'
+  order: 'asc' | 'desc',
+  loading: boolean
 }>()
 
 const emit = defineEmits(['toggleOrder'])
