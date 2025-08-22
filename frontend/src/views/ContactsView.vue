@@ -1,70 +1,68 @@
 <template>
-  <div class="contacts-bg">
-    <h2 class="contacts-title">Contatos</h2>
-    <div class="contacts-container">
-      <div class="contacts-header">
-        <div class="body-2 search">
-          <input
-            class="search-input"
-            type="text"
-            placeholder="Buscar contato"
-            v-model="search"
-          />
-          <span class="search-icon">
-            <IconSearch />
-          </span>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <AddContactButton @click="openCreateModal" />
-          <button class="report-btn" @click="generateReport">
-            <IconReport />
-          </button>
-        </div>
+  <CardTitle>Contatos</CardTitle>
+  <CardBase>
+    <CardHeader>
+      <div class="search">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Buscar contato"
+          v-model="search"
+        />
+        <span class="search-icon">
+          <IconSearch />
+        </span>
       </div>
-      <ContactTable
-        :contacts="sortedContactsWithRequiredFields"
-        :order="order"
-        :loading="loading"
-        @toggleOrder="toggleOrder"
-        @edit="openEditModal"
-        @delete="openDeleteModal"
-        @view="openViewModal"
-        @create="openCreateModal"
-      />
-      <ContactModal
-        v-model="showCreateModal"
-        title="Adicionar novo contato"
-        @save="createContact"
-      />
-      <ContactModal
-        v-model="showEditModal"
-        :contact="editingContact ? { ...editingContact, email: editingContact.email ?? '' } : undefined"
-        title="Editar contato"
-        @save="editContact"
-        @update:modelValue="val => { if (!val) closeEditModal() }"
-      />
-      <ContactViewModal
-        v-model="showViewModal"
-        :contact="viewingContact ? {
-          ...viewingContact,
-          email: viewingContact.email ?? '',
-          address: viewingContact.address ?? '',
-          city: viewingContact.city ?? '',
-          state: viewingContact.state ?? '',
-          neighborhood: viewingContact.neighborhood ?? ''
-        } : undefined"
-        @edit="openEditModal"
-        @delete="openDeleteModal"
-        @update:modelValue="val => { if (!val) closeViewModal() }"
-      />
-      <ContactDeleteModal
-        v-model="showDeleteModal"
-        :contact="deletingContact"
-        @deleted="deleteContact"
-        @update:modelValue="val => { if (!val) closeDeleteModal() }"
-      />
-    </div>
-  </div>
+      <div style="display: flex; gap: 12px;">
+        <AddContactButton @click="openCreateModal" />
+        <button class="report-btn" @click="generateReport">
+          <IconReport />
+        </button>
+      </div>
+    </CardHeader>
+    <ContactTable
+      :contacts="sortedContactsWithRequiredFields"
+      :order="order"
+      :loading="loading"
+      @toggleOrder="toggleOrder"
+      @edit="openEditModal"
+      @delete="openDeleteModal"
+      @view="openViewModal"
+      @create="openCreateModal"
+    />
+    <ContactModal
+      v-model="showCreateModal"
+      title="Adicionar novo contato"
+      @save="createContact"
+    />
+    <ContactModal
+      v-model="showEditModal"
+      :contact="editingContact ? { ...editingContact, email: editingContact.email ?? '' } : undefined"
+      title="Editar contato"
+      @save="editContact"
+      @update:modelValue="val => { if (!val) closeEditModal() }"
+    />
+    <ContactViewModal
+      v-model="showViewModal"
+      :contact="viewingContact ? {
+        ...viewingContact,
+        email: viewingContact.email ?? '',
+        address: viewingContact.address ?? '',
+        city: viewingContact.city ?? '',
+        state: viewingContact.state ?? '',
+        neighborhood: viewingContact.neighborhood ?? ''
+      } : undefined"
+      @edit="openEditModal"
+      @delete="openDeleteModal"
+      @update:modelValue="val => { if (!val) closeViewModal() }"
+    />
+    <ContactDeleteModal
+      v-model="showDeleteModal"
+      :contact="deletingContact"
+      @deleted="deleteContact"
+      @update:modelValue="val => { if (!val) closeDeleteModal() }"
+    />
+  </CardBase>
 </template>
 
 <script setup lang="ts">
@@ -78,6 +76,9 @@ import ContactDeleteModal from '@/components/ContactDeleteModal.vue'
 import IconReport from '@/components/icons/IconReport.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import ContactTable from '@/components/ContactTable.vue'
+import CardBase from '@/components/ui/CardBase.vue'
+import CardTitle from '@/components/ui/CardTitle.vue'
+import CardHeader from '@/components/ui/CardHeader.vue'
 
 const search = ref('')
 const contacts = ref<Contact[]>([])
@@ -222,12 +223,6 @@ function toggleOrder() {
   align-items: center;
   padding-top: 10px;
 }
-.contacts-title {
-  color: #262626;
-  margin-bottom: 10px;
-  width: 100%;
-  text-align: left;
-}
 .contacts-container {
   background: #fff;
   border-radius: 16px;
@@ -239,12 +234,6 @@ function toggleOrder() {
   padding: 16px;
   display: flex;
   flex-direction: column;
-}
-.contacts-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
 }
 .add-btn {
   background: #3F37C9;
@@ -285,15 +274,6 @@ function toggleOrder() {
   border: 1px solid #ddd;
   padding-left: 38px;
   background-color: #f8f8f8;
-}
-.contacts-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.contacts-table-header {
-  /* display: flex; */
-  padding: 8px 18px;
-  color: #505050;
 }
 .col-name {
   width: 30%;

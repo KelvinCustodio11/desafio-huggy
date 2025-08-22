@@ -3,10 +3,9 @@ import { api } from '@/services/api'
 
 async function loginWithHuggy() {
   try {
-    // Chama backend que retorna a authorize_url
     const { data } = await api.get('/auth/huggy/login')
     if (data.authorize_url) {
-      window.location.href = data.authorize_url // redireciona para Huggy
+      window.location.href = data.authorize_url
     }
   } catch (err) {
     console.error('Erro ao iniciar login com Huggy', err)
@@ -34,11 +33,6 @@ async function loginWithHuggy() {
   justify-content: center;
 }
 .login-card {
-  /* background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  width: 344px;
-  height: 220px; */
   display: flex;
   flex-direction: column;
   align-items: center;

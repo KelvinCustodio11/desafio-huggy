@@ -22,7 +22,6 @@
       <tr v-if="loading">
         <td colspan="4" style="text-align: center; padding: 20px;">
           <Loader />
-          <span style="color: #505050; font-size: small;">Carregando</span>
         </td>
       </tr>
       <tr v-else-if="contacts.length === 0">
@@ -117,6 +116,10 @@ th, td {
 thead th {
   font-weight: 500;
   color: #505050;
+}
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 .contact-row {
   align-items: center;

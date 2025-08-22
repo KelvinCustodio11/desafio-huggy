@@ -1,46 +1,49 @@
 <template>
-  <div class="reports-page">
-    <div class="reports-container">
-      <button class="back-btn" @click="$router.back()">&#8592; Voltar</button>
-      <h2 class="reports-title">Dados sobre contatos</h2>
-      <div v-if="loading" class="loading">Carregando...</div>
-      <div v-else>
-        <div class="chart-section">
-          <h3>Segmentação por estado</h3>
-          <VueApexCharts
-            width="350"
-            type="pie"
-            :options="stateChartOptions"
-            :series="stateSeries"
-          />
-        </div>
-        <div class="chart-section">
-          <h3>Segmentação por cidade</h3>
-          <VueApexCharts
-            width="350"
-            type="pie"
-            :options="cityChartOptions"
-            :series="citySeries"
-          />
-        </div>
-        <div class="chart-section">
-          <h3>Segmentação por faixa etária</h3>
-          <VueApexCharts
-            width="350"
-            type="pie"
-            :options="ageChartOptions"
-            :series="ageSeries"
-          />
-        </div>
+  <CardTitle>Relatórios</CardTitle>
+  <CardBase>
+    <button class="back-btn" @click="$router.back()"><IconLeft /> Voltar</button>
+    <Loader v-if="loading" />
+    <div v-else>
+      <div class="chart-section">
+        <CardHeader>Segmentação por estado</CardHeader>
+        <VueApexCharts
+          width="350"
+          type="pie"
+          :options="stateChartOptions"
+          :series="stateSeries"
+        />
+      </div>
+      <div class="chart-section">
+        <CardHeader>Segmentação por cidade</CardHeader>
+        <VueApexCharts
+          width="350"
+          type="pie"
+          :options="cityChartOptions"
+          :series="citySeries"
+        />
+      </div>
+      <div class="chart-section">
+        <CardHeader>Segmentação por faixa etária</CardHeader>
+        <VueApexCharts
+          width="350"
+          type="pie"
+          :options="ageChartOptions"
+          :series="ageSeries"
+        />
       </div>
     </div>
-  </div>
+  </CardBase>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { ReportClientData, ReportsService } from '@/services/reports'
 import VueApexCharts from 'vue3-apexcharts'
+import CardBase from '@/components/ui/CardBase.vue'
+import CardTitle from '@/components/ui/CardTitle.vue'
+import IconLeft from '@/components/icons/IconLeft.vue'
+import CardHeader from '@/components/ui/CardHeader.vue'
+import Loader from '@/components/ui/Loader.vue'
 
 const loading = ref(true)
 
@@ -79,23 +82,6 @@ const ageChartOptions = computed(() => ({
 </script>
 
 <style scoped>
-.reports-page {
-  min-height: 100vh;
-  padding: 24px;
-}
-.reports-container {
-  background: #fff;
-  border-radius: 16px;
-  max-width: 700px;
-  margin: 32px auto;
-  padding: 32px 24px;
-  box-shadow: 0 2px 8px #0001;
-}
-.reports-title {
-  font-size: 1.4rem;
-  font-weight: 500;
-  margin-bottom: 24px;
-}
 .back-btn {
   background: none;
   border: none;
@@ -105,7 +91,7 @@ const ageChartOptions = computed(() => ({
   margin-bottom: 16px;
 }
 .chart-section {
-  margin-bottom: 40px;
+  margin: 24px;
 }
 .loading {
   text-align: center;
