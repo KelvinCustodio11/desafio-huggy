@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from '@/services/api'
+import Loader from '@/components/ui/Loader.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -20,6 +21,7 @@ onMounted(async () => {
 
 <template>
   <div class="flex items-center justify-center h-screen">
+    <Loader/>
     <p>Processando login com a huggy...</p>
   </div>
 </template>

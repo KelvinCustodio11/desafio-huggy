@@ -73,16 +73,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import ContactAvatar from './ContactAvatar.vue'
+import ContactAvatar from './ui/Avatar.vue'
 import IconEdit from './icons/IconEdit.vue'
 import IconDelete from './icons/IconDelete.vue'
 import IconDown from './icons/IconDown.vue'
 import IconUp from './icons/IconUp.vue'
 import ContactsEmpty from './ContactsEmpty.vue'
-import Separator from './Separator.vue'
-import Loader from './Loader.vue'
+import Separator from './ui/Separator.vue'
+import Loader from './ui/Loader.vue'
 
-const props = defineProps<{
+defineProps<{
   contacts: Array<{
     id: number|string
     name: string
@@ -95,7 +95,7 @@ const props = defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['toggleOrder'])
+defineEmits(['toggleOrder', 'create', 'edit', 'delete', 'view'])
 
 const pressed = ref(false)
 const focused = ref(false)

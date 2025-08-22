@@ -10,6 +10,10 @@
 </template>
 
 <script setup lang="ts">
+defineOptions({
+  name: 'UiAvatar'
+})
+
 const props = defineProps<{
   photo?: string
   initials: string

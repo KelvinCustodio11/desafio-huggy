@@ -50,15 +50,18 @@
           email: viewingContact.email ?? '',
           address: viewingContact.address ?? '',
           city: viewingContact.city ?? '',
-          state: viewingContact.state ?? ''
+          state: viewingContact.state ?? '',
+          neighborhood: viewingContact.neighborhood ?? ''
         } : undefined"
         @edit="openEditModal"
         @delete="openDeleteModal"
+        @update:modelValue="val => { if (!val) closeViewModal() }"
       />
       <ContactDeleteModal
         v-model="showDeleteModal"
         :contact="deletingContact"
-        @deleted="fetchContacts"
+        @deleted="deleteContact"
+        @update:modelValue="val => { if (!val) closeDeleteModal() }"
       />
     </div>
   </div>
@@ -79,6 +82,7 @@ import ContactTable from '@/components/ContactTable.vue'
 interface Contact extends BaseContact {
   photo?: string
   disabled?: boolean
+  neighborhood?: string
 }
 
 const search = ref('')
@@ -103,19 +107,32 @@ const fetchContacts = async () => {
   }
 }
 const createContact = async (contact: Contact) => {
-  const { data } = await ContactsService.create(contact)
-  contacts.value.push(data)
+  try {
+    await ContactsService.create(contact)
+    await fetchContacts()
+  } catch (error) {
+    console.error('Erro ao criar contato:', error)
+    alert('Erro ao criar contato. Por favor, tente novamente.')
+  }
 }
 const editContact = async (contact: Contact) => {
-  const { data } = await ContactsService.update(contact.id, contact)
-  const index = contacts.value.findIndex(c => c.id === contact.id)
-  if (index !== -1) {
-    contacts.value[index] = data
+  try {
+    await ContactsService.update(contact.id, contact)
+    await fetchContacts()
+  } catch (error) {
+    console.error('Erro ao editar contato:', error)
+    alert('Erro ao editar contato. Por favor, tente novamente.')
   }
 }
 const deleteContact = async (contact: Contact) => {
-  await ContactsService.delete(contact.id)
-  contacts.value = contacts.value.filter(c => c.id !== contact.id)
+  if (!contact?.id) return
+  try {
+    await ContactsService.delete(contact.id)
+    await fetchContacts()
+  } catch (error) {
+    console.error('Erro ao deletar contato:', error)
+    alert('Erro ao deletar contato. Por favor, tente novamente.')
+  }
 }
 
 onMounted(fetchContacts)
@@ -148,7 +165,6 @@ const sortedContacts = computed(() => {
   })
 })
 
-// Ensure email and phone are always present for ContactTable
 const sortedContactsWithRequiredFields = computed(() =>
   sortedContacts.value.map(contact => ({
     id: contact.id,
@@ -168,6 +184,7 @@ function openCreateModal() {
   showCreateModal.value = true
 }
 function openEditModal(contact: Contact) {
+  closeAllModels()
   editingContact.value = contact
   showEditModal.value = true
 }
@@ -176,6 +193,7 @@ function closeEditModal() {
   editingContact.value = null
 }
 function openViewModal(contact: Contact) {
+  closeAllModels()
   viewingContact.value = contact
   showViewModal.value = true
 }
@@ -184,12 +202,18 @@ function closeViewModal() {
   viewingContact.value = null
 }
 function openDeleteModal(contact: Contact) {
+  closeAllModels()
   deletingContact.value = contact
   showDeleteModal.value = true
 }
 function closeDeleteModal() {
   showDeleteModal.value = false
   deletingContact.value = null
+}
+function closeAllModels() {
+  closeEditModal()
+  closeDeleteModal()
+  closeViewModal()
 }
 function toggleOrder() {
   order.value = order.value === 'asc' ? 'desc' : 'asc'

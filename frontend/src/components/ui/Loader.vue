@@ -4,8 +4,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// Nenhuma lógica necessária para o loader simples
+<script lang="ts">
+export default {
+  name: "AppLoader"
+}
 </script>
 
 <style scoped>

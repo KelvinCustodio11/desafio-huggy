@@ -8,7 +8,7 @@
       </p>
       <div class="delete-actions">
         <button class="cancel-btn" @click="close">Cancelar</button>
-        <button class="delete-btn" @click="handleDelete" :disabled="loading">
+        <button class="delete-btn" @click="emit('deleted', contact)" :disabled="loading">
           Excluir
         </button>
       </div>
@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import BaseModal from './ui/BaseModal.vue'
-import { ContactsService } from '@/services/contacts'
 
 interface Contact {
   id: number | string
@@ -40,18 +39,6 @@ watch(open, v => emit('update:modelValue', v))
 
 function close() {
   open.value = false
-}
-
-async function handleDelete() {
-  if (!props.contact?.id) return
-  loading.value = true
-  try {
-    await ContactsService.delete(Number(props.contact.id)) //TODO: LEVAR LOGICA PARA VIEW???
-    emit('deleted', props.contact)
-    close()
-  } catch {
-    loading.value = false
-  }
 }
 </script>
 

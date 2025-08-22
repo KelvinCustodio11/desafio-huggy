@@ -17,11 +17,11 @@
     </div>
     <div class="modal-line"></div>
     <div class="view-fields">
-      <div class="view-row"><span class="label">Email</span><span>{{ contact.email }}</span></div>
-      <div class="view-row"><span class="label">Endereço</span><span>{{ contact.address }}</span></div>
-      <div class="view-row"><span class="label">Bairro</span><span>{{ contact.neighborhood }}</span></div>
-      <div class="view-row"><span class="label">Cidade</span><span>{{ contact.city }}</span></div>
-      <div class="view-row"><span class="label">Estado</span><span>{{ contact.state }}</span></div>
+      <div class="view-row"><span class="label">Email</span><span>{{ contact.email || '—' }}</span></div>
+      <div class="view-row"><span class="label">Endereço</span><span>{{ contact.address || '—' }}</span></div>
+      <div class="view-row"><span class="label">Bairro</span><span>{{ contact.neighborhood || '—' }}</span></div>
+      <div class="view-row"><span class="label">Cidade</span><span>{{ contact.city || '—' }}</span></div>
+      <div class="view-row"><span class="label">Estado</span><span>{{ contact.state || '—' }}</span></div>
     </div>
   </BaseModal>
 </template>
@@ -32,12 +32,13 @@ import BaseModal from './ui/BaseModal.vue'
 import IconDelete from './icons/IconDelete.vue'
 import IconEdit from './icons/IconEdit.vue'
 import IconClose from './icons/IconClose.vue'
-import ContactAvatar from './ContactAvatar.vue'
+import ContactAvatar from './ui/Avatar.vue'
 
 interface Contact {
   name: string
   email: string
   address: string
+  neighborhood: string
   city: string
   state: string
   photo?: string
@@ -135,13 +136,28 @@ function close() {
 }
 .view-row {
   display: flex;
-  gap: 24px;
-  font-size: 1rem;
+  font-size: 0.75rem;
+  align-items: center;
+}
+.view-row span {
+  font-size: 0.75rem;
+  color: #222;
+  font-weight: 400;
 }
 .label {
   color: #888;
-  min-width: 80px;
-  width: 100px;
+  min-width: 110px;
+  width: 110px;
+  text-align: right;
   display: inline-block;
+  margin-right: 24px;
+  font-size: 0.75rem;
+}
+.view-row span:last-child {
+  flex: 1;
+  font-size: 0.75rem;
+}
+::v-deep .modal-content {
+  padding: 12px;
 }
 </style>
