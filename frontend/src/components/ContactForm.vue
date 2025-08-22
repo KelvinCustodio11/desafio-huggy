@@ -44,7 +44,7 @@
     <div class="form-group">
       <label>Endereço</label>
       <input
-        v-model="localForm.address"
+        v-model="localForm.address.street"
         :class="inputClass('address')"
         placeholder="Endereço"
         :disabled="disabled"
@@ -54,16 +54,25 @@
       <div class="form-group">
         <label>Bairro</label>
         <input
-          v-model="localForm.neighborhood"
+          v-model="localForm.address.neighborhood"
           :class="inputClass('neighborhood')"
           placeholder="Bairro"
           :disabled="disabled"
         />
       </div>
       <div class="form-group">
+        <label>Cidade</label>
+        <input
+          v-model="localForm.address.city"
+          :class="inputClass('city')"
+          placeholder="Cidade"
+          :disabled="disabled"
+        />
+      </div>
+      <div class="form-group">
         <label>Estado</label>
         <input
-          v-model="localForm.state"
+          v-model="localForm.address.state"
           :class="inputClass('state')"
           placeholder="Estado"
           :disabled="disabled"
@@ -84,6 +93,7 @@ type ContactFormData = {
   cell: string
   address: string
   neighborhood: string
+  city: string,
   state: string
 }
 
@@ -100,6 +110,7 @@ const localForm = reactive({
   cell: '',
   address: '',
   neighborhood: '',
+  city: '',
   state: ''
 })
 const errors = reactive<{ [k: string]: string }>({})
@@ -130,7 +141,7 @@ function validate() {
 
 function submit() {
   if (validate()) {
-    emit('submit', { ...localForm })
+    emit('submit', localForm )
   }
 }
 </script>

@@ -29,11 +29,8 @@ class ClientRepository implements ClientRepositoryInterface
     public function create(array $data): Client
     {
         $client = Client::create($data);
-        if (isset($data['city']) && isset($data['state'])) {
-            $client->address()->create([
-                'city' => $data['city'],
-                'state' => $data['state'],
-            ]);
+        if (isset($data['address'])) {
+            $client->address()->create($data['address']);
         }
         return $client;
     }
@@ -45,12 +42,10 @@ class ClientRepository implements ClientRepositoryInterface
             return null;
         }
         $client->update($data);
-        if (isset($data['city']) && isset($data['state'])) {
-            $client->address()->updateOrCreate(
-                ['client_id' => $id],
-                ['city' => $data['city'], 'state' => $data['state']]
-            );
-        }
+        $client->address()->updateOrCreate(
+            ['client_id' => $id],
+            $data['address'] ?? []
+        );
         return $client;
     }
 

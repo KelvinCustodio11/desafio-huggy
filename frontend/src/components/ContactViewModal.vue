@@ -18,10 +18,10 @@
     <div class="modal-line"></div>
     <div class="view-fields">
       <div class="view-row"><span class="label">Email</span><span>{{ contact.email || '—' }}</span></div>
-      <div class="view-row"><span class="label">Endereço</span><span>{{ contact.address || '—' }}</span></div>
-      <div class="view-row"><span class="label">Bairro</span><span>{{ contact.neighborhood || '—' }}</span></div>
-      <div class="view-row"><span class="label">Cidade</span><span>{{ contact.city || '—' }}</span></div>
-      <div class="view-row"><span class="label">Estado</span><span>{{ contact.state || '—' }}</span></div>
+      <div class="view-row"><span class="label">Endereço</span><span>{{ contact.address?.street || '—' }}</span></div>
+      <div class="view-row"><span class="label">Bairro</span><span>{{ contact.address?.neighborhood || '—' }}</span></div>
+      <div class="view-row"><span class="label">Cidade</span><span>{{ contact.address?.city || '—' }}</span></div>
+      <div class="view-row"><span class="label">Estado</span><span>{{ contact.address?.state || '—' }}</span></div>
     </div>
   </BaseModal>
 </template>
@@ -33,16 +33,7 @@ import IconDelete from './icons/IconDelete.vue'
 import IconEdit from './icons/IconEdit.vue'
 import IconClose from './icons/IconClose.vue'
 import ContactAvatar from './ui/Avatar.vue'
-
-interface Contact {
-  name: string
-  email: string
-  address: string
-  neighborhood: string
-  city: string
-  state: string
-  photo?: string
-}
+import { Contact } from '@/services/contacts'
 
 const props = defineProps<{
   modelValue: boolean
@@ -56,6 +47,7 @@ watch(open, v => emit('update:modelValue', v))
 
 const initials = computed(() => {
   if (!props.contact?.name) return ''
+  console.log('Calculating initials for:', props.contact)
   const names = props.contact.name.split(' ')
   return names.length > 1
     ? names[0][0] + names[names.length - 1][0]

@@ -37,21 +37,14 @@
     />
     <ContactModal
       v-model="showEditModal"
-      :contact="editingContact ? { ...editingContact, email: editingContact.email ?? '' } : undefined"
+      :contact="editingContact ? { ...editingContact } : undefined"
       title="Editar contato"
       @save="editContact"
       @update:modelValue="val => { if (!val) closeEditModal() }"
     />
     <ContactViewModal
       v-model="showViewModal"
-      :contact="viewingContact ? {
-        ...viewingContact,
-        email: viewingContact.email ?? '',
-        address: viewingContact.address ?? '',
-        city: viewingContact.city ?? '',
-        state: viewingContact.state ?? '',
-        neighborhood: viewingContact.neighborhood ?? ''
-      } : undefined"
+      :contact="viewingContact ? { ...viewingContact } : undefined"
       @edit="openEditModal"
       @delete="openDeleteModal"
       @update:modelValue="val => { if (!val) closeViewModal() }"
@@ -146,6 +139,7 @@ const filteredContacts = computed(() =>
       email: contact.email!,
       phone: contact.phone!,
       photo: contact.photo,
+      address: contact.address,
       disabled: contact.disabled
     }))
 )
@@ -166,7 +160,8 @@ const sortedContactsWithRequiredFields = computed(() =>
     name: contact.name,
     email: contact.email ?? '',
     phone: contact.phone ?? '',
-    photo: contact.photo,
+    photo: contact.photo ?? '',
+    address: contact.address ?? { street: '', neighborhood: '', city: '', state: '' },
     disabled: contact.disabled
   }))
 )

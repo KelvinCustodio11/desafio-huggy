@@ -19,6 +19,11 @@ class UpdateClientRequest extends FormRequest
             'phone' => 'nullable|string|max:20',
             'age'   => 'nullable|integer|min:0|max:120',
             'photo' => 'nullable|url',
+            'address' => 'nullable|array',
+            'address.street' => 'nullable|string|max:255',
+            'address.city'   => 'nullable|string|max:100',
+            'address.state'  => 'nullable|string|max:100',
+            'address.neighborhood' => 'nullable|string|max:100',
         ];
     }
 }

@@ -1,4 +1,3 @@
-// src/services/contacts.ts
 import { api } from './api'
 
 export interface Contact {
@@ -6,11 +5,14 @@ export interface Contact {
   name: string
   email?: string
   phone?: string
-  address?: string
-  city?: string
-  state?: string
   photo?: string
   disabled?: boolean
+  address: {
+    street?: string
+    neighborhood?: string
+    city?: string
+    state?: string
+  }
 }
 
 export const ContactsService = {
