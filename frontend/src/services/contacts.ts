@@ -9,6 +9,8 @@ export interface Contact {
   address?: string
   city?: string
   state?: string
+  photo?: string
+  disabled?: boolean
 }
 
 export const ContactsService = {

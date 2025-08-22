@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { ContactsService, type Contact as BaseContact } from '@/services/contacts'
+import { ContactsService, Contact } from '@/services/contacts'
 import AddContactButton from '@/components/AddContactButton.vue'
 import { useRouter } from 'vue-router'
 import ContactModal from '@/components/ContactModal.vue'
@@ -78,12 +78,6 @@ import ContactDeleteModal from '@/components/ContactDeleteModal.vue'
 import IconReport from '@/components/icons/IconReport.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import ContactTable from '@/components/ContactTable.vue'
-
-interface Contact extends BaseContact {
-  photo?: string
-  disabled?: boolean
-  neighborhood?: string
-}
 
 const search = ref('')
 const contacts = ref<Contact[]>([])
