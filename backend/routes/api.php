@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HuggySyncController;
 use App\Http\Controllers\Auth\HuggyAuthController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\VoipController;
 
 Route::middleware('api')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
@@ -16,8 +17,8 @@ Route::middleware('api')->group(function () {
 
             // Rotas extras
             Route::get('search', [ClientController::class, 'searchByNameOrPhone']);
-            // Route::post('{client}/call', [ClientController::class, 'call'])
-            //     ->whereNumber('client');
+            Route::post('{client}/call', [VoipController::class, 'call'])
+                 ->whereNumber('client');
         });
 
         Route::get('/huggy/contacts/sync', HuggySyncController::class);

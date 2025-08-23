@@ -53,7 +53,16 @@
           {{ contact.email }}
         </td>
         <td class="contact-phone" :class="{ disabled: contact.disabled }">
-          {{ contact.phone }}
+          <span
+            v-if="contact.phone && !contact.disabled"
+            class="phone-link"
+            @click.stop="$emit('call', contact)"
+          >
+            {{ contact.phone }}
+          </span>
+          <span v-else>
+            {{ contact.phone }}
+          </span>
         </td>
         <td class="actions" v-if="!contact.disabled">
           <div class="actions-inner">
@@ -94,7 +103,7 @@ defineProps<{
   loading: boolean
 }>()
 
-defineEmits(['toggleOrder', 'create', 'edit', 'delete', 'view'])
+defineEmits(['toggleOrder', 'create', 'edit', 'delete', 'view', 'call'])
 
 const pressed = ref(false)
 const focused = ref(false)
@@ -207,5 +216,12 @@ thead th {
 }
 .disabled {
   color: #bbb !important;
+}
+.phone-link {
+  cursor: pointer;
+}
+.phone-link:hover {
+  color: #1d1d70;
+  text-decoration: underline;
 }
 </style>

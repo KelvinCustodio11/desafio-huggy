@@ -29,6 +29,7 @@
       @delete="openDeleteModal"
       @view="openViewModal"
       @create="openCreateModal"
+      @call="callContact"
     />
     <ContactModal
       v-model="showCreateModal"
@@ -37,7 +38,16 @@
     />
     <ContactModal
       v-model="showEditModal"
-      :contact="editingContact ? { ...editingContact } : undefined"
+      :contact="editingContact ? {
+        ...editingContact,
+        email: editingContact.email ?? '',
+        address: {
+          street: editingContact.address?.street ?? '',
+          neighborhood: editingContact.address?.neighborhood ?? '',
+          city: editingContact.address?.city ?? '',
+          state: editingContact.address?.state ?? ''
+        }
+      } : undefined"
       title="Editar contato"
       @save="editContact"
       @update:modelValue="val => { if (!val) closeEditModal() }"
@@ -208,6 +218,16 @@ function closeAllModels() {
 }
 function toggleOrder() {
   order.value = order.value === 'asc' ? 'desc' : 'asc'
+}
+
+async function callContact(contact: Contact) {
+  if (!contact.phone) return
+  try {
+    await ContactsService.call(contact.id)
+    alert('Ligação iniciada!')
+  } catch (e) {
+    alert('Erro ao iniciar ligação: ' + (e.response?.data?.error || e.message))
+  }
 }
 </script>
 
