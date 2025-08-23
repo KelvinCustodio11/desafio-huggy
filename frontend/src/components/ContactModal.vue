@@ -31,6 +31,12 @@ const props = defineProps<{
     name: string
     email: string
     phone?: string
+    address: {
+      street: string
+      neighborhood: string
+      city: string
+      state: string
+    }
     [key: string]: unknown
   }
   disabled?: boolean
@@ -46,6 +52,12 @@ function handleSubmit(data: {
   name: string
   email: string
   phone?: string
+  address: {
+    street: string
+    neighborhood: string
+    city: string
+    state: string
+  }
   [key: string]: unknown
 }) {
   emit('save', data)

@@ -117,6 +117,7 @@ const deleteContact = async (contact: Contact) => {
   try {
     await ContactsService.delete(contact.id)
     await fetchContacts()
+    closeDeleteModal()
   } catch (error) {
     console.error('Erro ao deletar contato:', error)
     alert('Erro ao deletar contato. Por favor, tente novamente.')

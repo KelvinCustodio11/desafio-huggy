@@ -87,14 +87,17 @@
 import { reactive, watch } from 'vue'
 
 type ContactFormData = {
-  name: string
-  email: string
-  phone: string
-  cell: string
-  address: string
-  neighborhood: string
-  city: string,
-  state: string
+  id: string,
+  name: string,
+  email: string,
+  phone: string,
+  cell: string,
+  address: {
+    street: string,
+    neighborhood: string,
+    city: string,
+    state: string,
+  }
 }
 
 const props = defineProps<{
@@ -103,23 +106,45 @@ const props = defineProps<{
 }>()
 const emit = defineEmits(['submit'])
 
-const localForm = reactive({
+const localForm = reactive<ContactFormData>({
+  id: '',
   name: '',
   email: '',
   phone: '',
   cell: '',
-  address: '',
-  neighborhood: '',
-  city: '',
-  state: ''
+  address: {
+    street: '',
+    neighborhood: '',
+    city: '',
+    state: ''
+  }
 })
 const errors = reactive<{ [k: string]: string }>({})
 
 watch(
   () => props.modelValue,
   (val) => {
-    if (val) Object.assign(localForm, val)
-    else Object.keys(localForm).forEach(k => (localForm[k] = ''))
+    if (val) {
+      localForm.id = val.id ?? ''
+      localForm.name = val.name ?? ''
+      localForm.email = val.email ?? ''
+      localForm.phone = val.phone ?? ''
+      localForm.cell = val.cell ?? ''
+      localForm.address.street = val.address?.street ?? ''
+      localForm.address.neighborhood = val.address?.neighborhood ?? ''
+      localForm.address.city = val.address?.city ?? ''
+      localForm.address.state = val.address?.state ?? ''
+    } else {
+      localForm.id = ''
+      localForm.name = ''
+      localForm.email = ''
+      localForm.phone = ''
+      localForm.cell = ''
+      localForm.address.street = ''
+      localForm.address.neighborhood = ''
+      localForm.address.city = ''
+      localForm.address.state = ''
+    }
   },
   { immediate: true }
 )
