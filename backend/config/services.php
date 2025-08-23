@@ -46,4 +46,8 @@ return [
     'client' => [
         'callback_redirect'  => env('CLIENT_CALLBACK_REDIRECT', 'http://localhost:5173/callback'),
     ],
+
+    'webhook' => [
+        'url' => env('WEBHOOK_URL_CONTACTS'),
+    ],
 ];

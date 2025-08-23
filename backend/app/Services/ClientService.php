@@ -5,16 +5,18 @@ namespace App\Services;
 use App\Models\Client;
 use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Services\Contracts\ClientServiceInterface;
+use App\Services\Contracts\WebhookServiceInterface;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class ClientService implements ClientServiceInterface
 {
     protected $repository;
+    protected $webhookService;
 
-    public function __construct(ClientRepositoryInterface $repository)
+    public function __construct(ClientRepositoryInterface $repository, WebhookServiceInterface $webhookService)
     {
         $this->repository = $repository;
+        $this->webhookService = $webhookService;
     }
 
     public function getAllClients(): Collection
@@ -38,16 +40,44 @@ class ClientService implements ClientServiceInterface
             throw new \InvalidArgumentException('O email é obrigatório.');
         }
 
-        return $this->repository->create($data);
+        $client = $this->repository->create($data);
+
+        if (!$client) {
+            throw new \RuntimeException('Erro ao criar cliente.');
+        }
+
+        $this->webhookService->sendContact($client->toArray());
+
+        return $client;
     }
 
     public function updateClient(int $id, array $data): ?Client
     {
-        return $this->repository->update($id, $data);
+        $client = $this->repository->update($id, $data);
+
+        if (!$client) {
+            throw new \InvalidArgumentException('Cliente não encontrado.');
+        }
+
+        $this->webhookService->sendContact($client->toArray());
+
+        return $client;
     }
 
     public function deleteClient(int $id): bool
     {
-        return $this->repository->delete($id);
+        $client = $this->repository->find($id);
+        if (!$client) {
+            throw new \InvalidArgumentException('Cliente não encontrado.');
+        }
+
+        $result = $this->repository->delete($id);
+        if (!$result) {
+            throw new \RuntimeException('Erro ao deletar cliente.');
+        }
+
+        $this->webhookService->sendContact($client->toArray());
+
+        return $result;
     }
 }

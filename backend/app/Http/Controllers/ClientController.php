@@ -24,8 +24,15 @@ class ClientController extends Controller
 
     public function store(StoreClientRequest $request): JsonResponse
     {
-        $client = $this->clientService->createClient($request->validated());
-        return response()->json($client, 201);
+        try {
+            $client = $this->clientService->createClient($request->validated());
+            return response()->json($client, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to create client',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     public function show(int $id): JsonResponse
@@ -43,13 +50,27 @@ class ClientController extends Controller
 
     public function update(UpdateClientRequest $request, int $id): JsonResponse
     {
-        $client = $this->clientService->updateClient($id, $request->validated());
-        return response()->json($client);
+        try {
+            $client = $this->clientService->updateClient($id, $request->validated());
+            return response()->json($client);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to update client',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $this->clientService->deleteClient($id);
-        return response()->json(null, 204);
+        try {
+            $this->clientService->deleteClient($id);
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to delete client',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

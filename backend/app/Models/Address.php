@@ -12,7 +12,14 @@ class Address extends Model
 
     protected $fillable = [
         'client_id',
+        'street',
+        'neighborhood',
         'city',
         'state',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

@@ -5,10 +5,12 @@ namespace Tests\Unit;
 use App\Models\Client;
 use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Services\ClientService;
+use App\Services\Contracts\WebhookServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 class ClientServiceTest extends TestCase
 {
+    protected $webhookServiceMock;
     protected $repositoryMock;
     protected $service;
 
@@ -17,7 +19,8 @@ class ClientServiceTest extends TestCase
         parent::setUp();
 
         $this->repositoryMock = $this->createMock(ClientRepositoryInterface::class);
-        $this->service = new ClientService($this->repositoryMock);
+        $this->webhookServiceMock = $this->createMock(WebhookServiceInterface::class);
+        $this->service = new ClientService($this->repositoryMock, $this->webhookServiceMock);
     }
 
     public function test_can_create_client()
@@ -70,6 +73,12 @@ class ClientServiceTest extends TestCase
     public function test_can_delete_client()
     {
         $client = new Client(['id' => 1]);
+
+        $this->repositoryMock
+            ->expects($this->once())
+            ->method('find')
+            ->with(1)
+            ->willReturn($client);
 
         $this->repositoryMock
             ->expects($this->once())
