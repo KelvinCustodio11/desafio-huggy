@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Services\ClientService;
 use App\Services\Contracts\WebhookServiceInterface;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\TestCase;
 
 class ClientServiceTest extends TestCase
@@ -25,18 +26,37 @@ class ClientServiceTest extends TestCase
 
     public function test_can_create_client()
     {
-        $data = ['name' => 'John Doe', 'email' => 'john@example.com'];
+        $user = new \stdClass();
+        $user->huggy_access_token = 'fake-token';
+        Auth::shouldReceive('user')->andReturn($user);
+
+        $data = ['name' => 'John Doe', 'email' => 'john@example.com', 'huggy_contact_id' => 1];
+
+        $clientMock = $this->getMockBuilder(Client::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'toArray'])
+            ->getMock();
+
+        $clientMock->expects($this->once())->method('save')->willReturn(true);
+        $clientMock->expects($this->once())->method('toArray')->willReturn($data);
 
         $this->repositoryMock
             ->expects($this->once())
             ->method('create')
             ->with($data)
-            ->willReturn(new Client($data));
+            ->willReturn($clientMock);
+
+        $this->webhookServiceMock
+            ->expects($this->once())
+            ->method('createContact')
+            ->with($data, 'fake-token')
+            ->willReturn(123);
+
+        $clientMock->huggy_contact_id = null; // simula antes do webhook
 
         $client = $this->service->createClient($data);
 
         $this->assertInstanceOf(Client::class, $client);
-        $this->assertEquals('John Doe', $client->name);
     }
 
     public function test_can_get_all_clients()

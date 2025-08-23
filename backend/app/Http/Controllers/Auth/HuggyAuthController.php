@@ -63,19 +63,10 @@ class HuggyAuthController extends Controller
         Auth::login($user);
         $apiToken = $user->createToken('api')->plainTextToken;
 
-
-        // Redireciona para o Vue com o token TODO: refatorar essa estrtegia pois nao e seguro!
-        ///return redirect()->away(path: 'http://localhost:5173/callback?token=' . $apiToken);
-
+        // Redireciona para cliente/frontend com code para troca por token sanctum!
         $code = Str::uuid()->toString();
         Cache::put("auth_code_{$code}", $apiToken, now()->addMinute());
         return redirect()->away(config('services.client.callback_redirect') . '?code=' . $code);
-
-        // return response()->json([
-        //     'message' => 'Authenticated with Huggy',
-        //     'user' => $user->only(['id','name','email','huggy_user_id','huggy_company_id']),
-        //     'api_token' => $apiToken,
-        // ]);
     }
 
     public function exchangeCode(Request $request)

@@ -27,7 +27,7 @@ class ClientApiTest extends TestCase
         ];
 
         $this->authenticateUser();
-        $this->mockWebhookService();
+        $this->mockWebhookService('createContact');
 
         $response = $this->postJson('/api/clients', $data);
 
@@ -53,9 +53,9 @@ class ClientApiTest extends TestCase
     public function test_can_update_client()
     {
         $this->authenticateUser();
-        $this->mockWebhookService();
+        $this->mockWebhookService('updateContact');
 
-        $client = Client::factory()->create();
+        $client = Client::factory()->create(['huggy_contact_id' => 2]);
 
         $data = ['name' => 'Jane Doe'];
 
@@ -70,9 +70,9 @@ class ClientApiTest extends TestCase
     public function test_can_delete_client()
     {
         $this->authenticateUser();
-        $this->mockWebhookService();
+        $this->mockWebhookService('deleteContact');
 
-        $client = Client::factory()->create();
+        $client = Client::factory()->create(['huggy_contact_id' => 2]);
 
         $response = $this->deleteJson("/api/clients/{$client->id}");
 
@@ -102,7 +102,7 @@ class ClientApiTest extends TestCase
     public function test_cannot_create_client_with_invalid_data()
     {
         $this->authenticateUser();
-        $this->mockWebhookService('never');
+        $this->mockWebhookService('createClient', 'never');
 
         $response = $this->postJson('/api/clients', []);
         $response->assertStatus(422);
@@ -118,7 +118,7 @@ class ClientApiTest extends TestCase
     public function test_cannot_update_nonexistent_client()
     {
         $this->authenticateUser();
-        $this->mockWebhookService('never');
+        $this->mockWebhookService('createClient','never');
 
         $response = $this->putJson('/api/clients/99999', ['name' => 'Does Not Exist']);
         $response->assertStatus(400);
@@ -127,7 +127,7 @@ class ClientApiTest extends TestCase
     public function test_cannot_delete_nonexistent_client()
     {
         $this->authenticateUser();
-        $this->mockWebhookService('never');
+        $this->mockWebhookService('createClient','never');
 
         $response = $this->deleteJson('/api/clients/99999');
         $response->assertStatus(400);
@@ -149,7 +149,7 @@ class ClientApiTest extends TestCase
         $this->authenticateUser();
 
         $mock = $this->mock(WebhookService::class);
-        $mock->shouldReceive('sendContact')->once()->andThrow(new \Exception('Webhook error'));
+        $mock->shouldReceive('createContact')->once()->andThrow(new \Exception('Webhook error'));
         $this->app->instance(WebhookService::class, $mock);
 
         $payload = [

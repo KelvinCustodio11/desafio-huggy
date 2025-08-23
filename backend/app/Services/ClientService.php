@@ -7,6 +7,7 @@ use App\Repositories\Contracts\ClientRepositoryInterface;
 use App\Services\Contracts\ClientServiceInterface;
 use App\Services\Contracts\WebhookServiceInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class ClientService implements ClientServiceInterface
 {
@@ -46,7 +47,10 @@ class ClientService implements ClientServiceInterface
             throw new \RuntimeException('Erro ao criar cliente.');
         }
 
-        $this->webhookService->sendContact($client->toArray());
+        $user = Auth::user();
+        $huggyId = $this->webhookService->createContact($client->toArray(), $user->huggy_access_token);
+        $client->huggy_contact_id = $huggyId;
+        $client->save();
 
         return $client;
     }
@@ -59,7 +63,10 @@ class ClientService implements ClientServiceInterface
             throw new \InvalidArgumentException('Cliente não encontrado.');
         }
 
-        $this->webhookService->sendContact($client->toArray());
+        if($client->huggy_contact_id) {
+            $user = Auth::user();
+            $this->webhookService->updateContact($client->huggy_contact_id, $client->toArray(), $user->huggy_access_token);
+        }
 
         return $client;
     }
@@ -76,7 +83,10 @@ class ClientService implements ClientServiceInterface
             throw new \RuntimeException('Erro ao deletar cliente.');
         }
 
-        $this->webhookService->sendContact($client->toArray());
+        if($client->huggy_contact_id) {
+            $user = Auth::user();
+            $this->webhookService->deleteContact($client->huggy_contact_id, $user->huggy_access_token);
+        }
 
         return $result;
     }
