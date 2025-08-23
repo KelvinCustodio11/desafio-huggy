@@ -199,6 +199,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Realizar Ligação (Call)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "14|LbkxndFg7iNtrhbFvd1WcMq7hABPIVVVbv4c9YEMe3899f1d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/clients/1/call",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"1",
+								"call"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

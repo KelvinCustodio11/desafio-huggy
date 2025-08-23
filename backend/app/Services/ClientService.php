@@ -8,6 +8,7 @@ use App\Services\Contracts\ClientServiceInterface;
 use App\Services\Contracts\WebhookServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendWelcomeEmail;
 
 class ClientService implements ClientServiceInterface
 {
@@ -52,7 +53,16 @@ class ClientService implements ClientServiceInterface
         $client->huggy_contact_id = $huggyId;
         $client->save();
 
+        $this->dispatchWelcomeEmailJob($client);
+
         return $client;
+    }
+    /**
+     * Método protegido para despachar o job de boas-vindas. Facilita o mock em testes unitários.
+     */
+    protected function dispatchWelcomeEmailJob($client)
+    {
+        \App\Jobs\SendWelcomeEmail::dispatch($client)->delay(now()->addMinutes(30));
     }
 
     public function updateClient(int $id, array $data): ?Client

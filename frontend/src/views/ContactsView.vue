@@ -110,7 +110,7 @@ const createContact = async (contact: Contact) => {
     await fetchContacts()
   } catch (error) {
     console.error('Erro ao criar contato:', error)
-    alert('Erro ao criar contato. Por favor, tente novamente.')
+    alert('Erro ao criar contato. Por favor, tente novamente. ' + (error.response?.data?.message || error.message))
   }
 }
 const editContact = async (contact: Contact) => {
@@ -119,7 +119,7 @@ const editContact = async (contact: Contact) => {
     await fetchContacts()
   } catch (error) {
     console.error('Erro ao editar contato:', error)
-    alert('Erro ao editar contato. Por favor, tente novamente.')
+    alert('Erro ao editar contato. Por favor, tente novamente. ' + (error.response?.data?.message || error.message))
   }
 }
 const deleteContact = async (contact: Contact) => {
@@ -226,7 +226,7 @@ async function callContact(contact: Contact) {
     await ContactsService.call(contact.id)
     alert('Ligação iniciada!')
   } catch (e) {
-    alert('Erro ao iniciar ligação: ' + (e.response?.data?.error || e.message))
+    alert('Erro ao iniciar ligação: ' + ( e.message || e.response?.data?.error))
   }
 }
 </script>

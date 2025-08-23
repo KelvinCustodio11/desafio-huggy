@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\Client;
 use App\Services\WebhookService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
+use App\Jobs\SendWelcomeEmail;
 
 class ClientApiTest extends TestCase
 {
@@ -32,7 +34,7 @@ class ClientApiTest extends TestCase
         $response = $this->postJson('/api/clients', $data);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment(['name' => 'John Doe']);
+            ->assertJsonFragment(['name' => 'John Doe']);
 
         $this->assertDatabaseHas('clients', ['email' => 'john@example.com', 'email' => 'john@example.com', 'phone' => '123-456-7890', 'age' => 30]);
         $this->assertDatabaseHas('addresses', ['street' => '123 Main St', 'city' => 'Springfield', 'state' => 'IL', 'neighborhood' => '62704']);
@@ -161,5 +163,29 @@ class ClientApiTest extends TestCase
         $response = $this->postJson('/api/clients', $payload);
 
         $response->assertStatus(400);
+    }
+
+    public function test_welcome_email_job_is_dispatched()
+    {
+        Bus::fake();
+
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'phone' => '123-456-7890',
+            'age' => 30,
+            'address' => [
+                'street' => '123 Main St',
+                'city' => 'Springfield',
+                'state' => 'IL',
+                'neighborhood' => '62704'
+            ]
+        ];
+
+        $this->authenticateUser();
+        $this->mockWebhookService('createContact');
+
+        $this->postJson('/api/clients', $data);
+        Bus::assertDispatched(SendWelcomeEmail::class);
     }
 }

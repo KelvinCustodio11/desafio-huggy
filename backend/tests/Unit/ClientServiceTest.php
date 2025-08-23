@@ -21,7 +21,12 @@ class ClientServiceTest extends TestCase
 
         $this->repositoryMock = $this->createMock(ClientRepositoryInterface::class);
         $this->webhookServiceMock = $this->createMock(WebhookServiceInterface::class);
-        $this->service = new ClientService($this->repositoryMock, $this->webhookServiceMock);
+        // Cria uma classe anônima sobrescrevendo o método de dispatch
+        $this->service = new class($this->repositoryMock, $this->webhookServiceMock) extends \App\Services\ClientService {
+            protected function dispatchWelcomeEmailJob($client) {
+                // Não faz nada no teste unitário
+            }
+        };
     }
 
     public function test_can_create_client()
