@@ -1,14 +1,7 @@
 <template>
-  <div class="card-header">
+  <div class="flex sm:flex-row flex-col gap-2 mb-4 text-neutral-900">
     <slot />
   </div>
 </template>
 
-<style scoped>
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    color: #262626;
-  }
-</style>
+

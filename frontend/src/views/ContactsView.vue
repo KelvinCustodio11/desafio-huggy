@@ -2,20 +2,20 @@
   <CardTitle>Contatos</CardTitle>
   <CardBase>
     <CardHeader>
-      <div class="search">
+      <div class="relative flex items-center w-full min-w-[240px]">
         <input
-          class="search-input"
+          class="w-full  pl-10 pr-4 py-2 rounded-lg border border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           type="text"
           placeholder="Buscar contato"
           v-model="search"
         />
-        <span class="search-icon">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2">
           <IconSearch />
         </span>
       </div>
-      <div style="display: flex; gap: 12px;">
+      <div class="flex gap-4 mt-2 sm:mt-0 flex-wrap w-full sm:justify-end justify-between">
         <AddContactButton @click="openCreateModal" />
-        <button class="report-btn" @click="generateReport">
+        <button @click="generateReport">
           <IconReport />
         </button>
       </div>
@@ -334,11 +334,5 @@ async function callContact(contact: Contact) {
 }
 .empty-btn {
   margin-top: 0;
-}
-.report-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
 }
 </style>

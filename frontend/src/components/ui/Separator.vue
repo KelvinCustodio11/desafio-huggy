@@ -12,6 +12,6 @@ export default {
   .separator {
     height: 2px;
     background: #e1e1e1;
-    margin: 8px -16px;
+    margin: 2px -16px;
   }
 </style>

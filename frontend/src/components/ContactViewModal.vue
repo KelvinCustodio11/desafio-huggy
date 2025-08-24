@@ -118,8 +118,8 @@ function close() {
   border-top: 2px solid #eee;
   margin-bottom: 18px;
   margin-top: 0;
-  margin-left: -24px;
-  margin-right: -24px;
+  margin-left: -12px;
+  margin-right: -12px;
 }
 .view-fields {
   display: flex;

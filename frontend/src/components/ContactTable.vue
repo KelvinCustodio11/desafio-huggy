@@ -1,82 +1,84 @@
 <template>
-  <table class="contacts-table">
-    <thead>
+  <div class="w-full overflow-x-auto">
+    <table class="contacts-table min-w-[600px] w-full">
+      <thead>
+        <tr>
+          <th @click="$emit('toggleOrder')" style="cursor:pointer;">
+            Nome
+            <span class="icon-down">
+              <component :is="order === 'asc' ? IconUp : IconDown" />
+            </span>
+          </th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th></th>
+        </tr>
+      </thead>
       <tr>
-        <th @click="$emit('toggleOrder')" style="cursor:pointer;">
-          Nome
-          <span class="icon-down">
-            <component :is="order === 'asc' ? IconUp : IconDown" />
-          </span>
-        </th>
-        <th>Email</th>
-        <th>Telefone</th>
-        <th class="actions-header"></th>
-      </tr>
-    </thead>
-    <tr>
-      <td colspan="4" class="separator-row">
-        <Separator />
-      </td>
-    </tr>
-    <tbody>
-      <tr v-if="loading">
-        <td colspan="4" style="text-align: center; padding: 20px;">
-          <Loader />
+        <td colspan="4" class="p-0 overflow-hidden">
+          <Separator />
         </td>
       </tr>
-      <tr v-else-if="contacts.length === 0">
-        <td colspan="4">
-          <ContactsEmpty @openCreateModal="$emit('create')" />
-        </td>
-      </tr>
-      <tr v-else
-        v-for="contact in contacts"
-        :key="contact.id"
-        class="contact-row"
-        :class="{ pressed: false, focused: false, disabled: contact.disabled }"
-        @mousedown="pressed = true"
-        @mouseup="pressed = false"
-        @mouseleave="pressed = false"
-        @focus="focused = true"
-        @blur="focused = false"
-        @click="$emit('view', contact)"
-      >
-        <td>
-          <div style="display: flex;">
-            <ContactAvatar :photo="contact.photo" :initials="getInitials(contact.name)" />
-            <div class="contact-name" :class="{ disabled: contact.disabled }">
-              {{ contact.name }}
+      <tbody>
+        <tr v-if="loading">
+          <td colspan="4">
+            <Loader />
+          </td>
+        </tr>
+        <tr v-else-if="contacts.length === 0">
+          <td colspan="4">
+            <ContactsEmpty @openCreateModal="$emit('create')" />
+          </td>
+        </tr>
+        <tr v-else
+          v-for="contact in contacts"
+          :key="contact.id"
+          class="contact-row"
+          :class="{ pressed: false, focused: false, disabled: contact.disabled }"
+          @mousedown="pressed = true"
+          @mouseup="pressed = false"
+          @mouseleave="pressed = false"
+          @focus="focused = true"
+          @blur="focused = false"
+          @click="$emit('view', contact)"
+        >
+          <td>
+            <div style="display: flex;">
+              <ContactAvatar :photo="contact.photo" :initials="getInitials(contact.name)" />
+              <div class="contact-name" :class="{ disabled: contact.disabled }">
+                {{ contact.name }}
+              </div>
             </div>
-          </div>
-        </td>
-        <td class="contact-email" :class="{ disabled: contact.disabled }">
-          {{ contact.email }}
-        </td>
-        <td class="contact-phone" :class="{ disabled: contact.disabled }">
-          <span
-            v-if="contact.phone && !contact.disabled"
-            class="phone-link"
-            @click.stop="$emit('call', contact)"
-          >
-            {{ contact.phone }}
-          </span>
-          <span v-else>
-            {{ contact.phone }}
-          </span>
-        </td>
-        <td class="actions" v-if="!contact.disabled">
-          <div class="actions-inner">
-            <button class="icon-btn" title="Editar" @click.stop="$emit('edit', contact)">
-              <IconEdit />
-            </button>
-            <button class="icon-btn" title="Excluir" @click.stop="$emit('delete', contact)">
-              <IconDelete />
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+          <td class="contact-email" :class="{ disabled: contact.disabled }">
+            {{ contact.email }}
+          </td>
+          <td class="contact-phone" :class="{ disabled: contact.disabled }">
+            <span
+              v-if="contact.phone && !contact.disabled"
+              class="phone-link"
+              @click.stop="$emit('call', contact)"
+            >
+              {{ contact.phone }}
+            </span>
+            <span v-else>
+              {{ contact.phone }}
+            </span>
+          </td>
+          <td>
+            <div class="actions-inner" v-if="!contact.disabled">
+              <button class="icon-btn" title="Editar" @click.stop="$emit('edit', contact)">
+                <IconEdit />
+              </button>
+              <button class="icon-btn" title="Excluir" @click.stop="$emit('delete', contact)">
+                <IconDelete />
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -119,8 +121,14 @@ function getInitials(name: string) {
 <style scoped>
 th, td {
   text-align: left;
-  padding: 8px 12px;
-  font-size: small;
+  padding: 8px 8px;
+  font-size: 0.95rem;
+}
+@media (max-width: 640px) {
+  th, td {
+    padding: 6px 4px;
+    font-size: 0.85rem;
+  }
 }
 thead th {
   font-weight: 500;
@@ -173,9 +181,6 @@ thead th {
 }
 .contact-phone {
   min-width: 120px;
-}
-.separator-row {
-  padding: 0
 }
 .icon-down {
   display: inline-flex;

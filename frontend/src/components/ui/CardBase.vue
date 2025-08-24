@@ -1,18 +1,5 @@
 <template>
-  <div class="card-base">
+  <div class="bg-white rounded-2xl shadow-md p-2 sm:p-4 w-full max-w-[90vw] flex flex-col mt-3 h-[90vh] overflow-y-auto">
     <slot />
   </div>
 </template>
-
-<style scoped>
-  .card-base {
-    min-height: 90vh;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-    padding: 16px;
-    width: 930px;
-    flex-direction: column;
-    margin-top: 12px;
-  }
-</style>

@@ -8,7 +8,7 @@
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
 }
 
 body {
@@ -55,12 +55,5 @@ form div {
 @media (hover: hover) {
   a:hover {
     background-color: hsla(282, 94%, 34%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  #app {
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
   }
 }
