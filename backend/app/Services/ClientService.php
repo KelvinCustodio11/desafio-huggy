@@ -62,7 +62,7 @@ class ClientService implements ClientServiceInterface
      */
     protected function dispatchWelcomeEmailJob($client)
     {
-        \App\Jobs\SendWelcomeEmail::dispatch($client)->delay(now()->addMinutes(30));
+        SendWelcomeEmail::dispatch($client)->delay(now()->addMinutes(30));
     }
 
     public function updateClient(int $id, array $data): ?Client

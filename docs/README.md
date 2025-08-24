@@ -78,6 +78,12 @@ project-root/
   php artisan view:clear
   ```
 
+
+Talvez seja necessario dar permissoes para storage, caso der erro de Nginx: 
+```sh
+docker compose exec app chmod -R 777 storage bootstrap/cache
+```
+
 10. Rode o worker de filas (para processar jobs agendados, como envio de e-mail):
   ```sh
   php artisan queue:work
@@ -114,6 +120,10 @@ ngrok http 8080
 ```
 Use o link gerado para configurar o `HUGGY_REDIRECT_URI` no .env e na aplicação Huggy.
 
+Importante: Adicionar a URL de callback do ngrok no aplicativo huggy para autenticacao OAuth.
+Ex:
+URL de redirecionamento
+https://3eb533f33fca.ngrok-free.app/api/auth/huggy/callback
 ---
 
 ### 6. Testes
@@ -157,10 +167,43 @@ ________________________________________________________________________________
 ```
 ---
 
-### 8. Observações
+### 8. Teste Email 
+a. Criar conta no Mailtrap
+
+Acesse https://mailtrap.io
+
+Crie sua conta (pode usar a gratuita).
+
+Dentro do painel, crie uma Inbox (ex: "Laravel Test").
+
+Copie as credenciais SMTP (servidor, porta, usuário e senha).
+
+b. Configurar o .env no Laravel
+
+No seu projeto Laravel, abra o arquivo .env e adicione as credenciais do Mailtrap:
+
+```sh
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=SEU_USERNAME_AQUI
+MAIL_PASSWORD=SUA_SENHA_AQUI
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=teste@desafiohuggy.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+⚠️ Substitua SEU_USERNAME_AQUI e SUA_SENHA_AQUI pelos dados do Mailtrap.
+
+<img width="697" height="385" alt="image" src="https://github.com/user-attachments/assets/986fc3ad-d7f5-4054-ac2f-d6d364d0affe" />
+---
+
+### 9. Observações
 
 - Certifique-se de que as variáveis de ambiente estejam corretas e que a chave do Laravel (`APP_KEY`) tenha sido gerada.
 - Para integração com a Huggy, é obrigatório criar uma aplicação na plataforma Huggy e configurar as credenciais no `.env`.
-- Para webhooks, utilize o Ngrok para expor seu backend local.
+- Para webhooks, utilize o Ngrok para expor seu backend local. Lembre-se de adicionar a URL de callback para autenticacao OAuth.
 - Use a collection Postman disponível em `/docs` para testar as rotas da API, atente-se para alterar o Bearer Token da Autenticacao.
 ```
+---
+<img width="1291" height="713" alt="Screenshot 2025-08-23 221508" src="https://github.com/user-attachments/assets/12ea67c8-8097-44b8-8b08-95339c310137" />

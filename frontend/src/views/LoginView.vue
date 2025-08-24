@@ -26,8 +26,11 @@ async function loginWithHuggy() {
 
 <style scoped>
 .login-bg {
-  min-height: 154px;
-  min-width: 930px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
