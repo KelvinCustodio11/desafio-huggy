@@ -1,3 +1,4 @@
+
 @import './base.css';
 
 @tailwind base;
@@ -12,6 +13,43 @@
 
 body {
   place-items: center;
+}
+
+input {
+  @apply border rounded-lg px-3 py-2 focus:outline-none bg-gray-50 focus:border-indigo-500;
+}
+
+input:disabled {
+  @apply bg-gray-100 text-gray-400;
+}
+
+input:enabled {
+  @apply text-gray-700;
+}
+
+input.error {
+  @apply border-red-700 bg-red-50;
+}
+
+.text-error {
+  @apply text-xs text-red-700;
+}
+
+
+form {
+  @apply flex flex-col gap-3 w-full max-w-xl mx-auto bg-white rounded-lg shadow-none;
+}
+
+form label {
+  @apply text-sm text-gray-700;
+}
+
+form .row {
+  @apply flex flex-col md:flex-row gap-3 min-w-0 overflow-x-hidden;
+}
+
+form div {
+  @apply flex flex-col gap-1 flex-1 min-w-0;
 }
 
 @media (hover: hover) {

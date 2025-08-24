@@ -1,84 +1,84 @@
 <template>
-  <form class="modal-form" @submit.prevent="submit">
-    <div class="form-group">
-      <label>Nome</label>
+  <form @submit.prevent="submit" >
+    <div>
+      <label class="input-label">Nome</label>
       <input
         v-model="localForm.name"
-        :class="inputClass('name')"
+        :class="[inputClass('name'), 'input-text', errors.name ? 'input-error' : '', disabled ? 'disabled' : 'enabled']"
         placeholder="Nome completo"
         :disabled="disabled"
       />
-      <span v-if="errors.name" class="error-msg">{{ errors.name }}</span>
+      <span v-if="errors.name" class="text-error">{{ errors.name }}</span>
     </div>
-    <div class="form-group">
-      <label>Email</label>
+    <div>
+      <label class="input-label">Email</label>
       <input
         v-model="localForm.email"
-        :class="inputClass('email')"
+        :class="[inputClass('email'), 'input-text', errors.email ?  'input-error' : '', !disabled ? 'disabled' : '']"
         placeholder="Email"
         :disabled="disabled"
       />
-      <span v-if="errors.email" class="error-msg">{{ errors.email }}</span>
+      <span v-if="errors.email" class="text-error">{{ errors.email }}</span>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Telefone</label>
+    <div class="row">
+      <div>
+        <label class="input-label">Telefone</label>
         <input
           v-model="localForm.phone"
-          :class="inputClass('phone')"
+            :class="[inputClass('phone'), 'input-text', errors.phone ? 'input-error' : '', disabled ? 'disabled' : 'enabled']"
           placeholder="Telefone"
           :disabled="disabled"
         />
-        <span v-if="errors.phone" class="error-msg">{{ errors.phone }}</span>
+        <span v-if="errors.phone" class="text-error">{{ errors.phone }}</span>
       </div>
-      <div class="form-group">
-        <label>Celular</label>
+      <div>
+        <label class="input-label">Celular</label>
         <input
           v-model="localForm.cell"
-          :class="inputClass('cell')"
+            :class="[inputClass('cell'), 'input-text', disabled ? 'disabled' : 'enabled']"
           placeholder="Celular"
           :disabled="disabled"
         />
       </div>
     </div>
-    <div class="form-group">
-      <label>Endereço</label>
+    <div>
+      <label class="input-label">Endereço</label>
       <input
         v-model="localForm.address.street"
-        :class="inputClass('address')"
+        :class="[inputClass('address'), 'input-text', disabled ? 'disabled' : 'enabled']"
         placeholder="Endereço"
         :disabled="disabled"
       />
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Bairro</label>
+    <row class="row">
+      <div>
+        <label class="input-label">Bairro</label>
         <input
           v-model="localForm.address.neighborhood"
-          :class="inputClass('neighborhood')"
+          :class="[inputClass('neighborhood'), 'input-text', disabled ? 'disabled' : 'enabled']"
           placeholder="Bairro"
           :disabled="disabled"
         />
       </div>
-      <div class="form-group">
-        <label>Cidade</label>
+      <div>
+        <label class="input-label">Cidade</label>
         <input
           v-model="localForm.address.city"
-          :class="inputClass('city')"
+          :class="[inputClass('city'), 'input-text', disabled ? 'disabled' : 'enabled']"
           placeholder="Cidade"
           :disabled="disabled"
         />
       </div>
-      <div class="form-group">
-        <label>Estado</label>
+      <div>
+        <label class="input-label">Estado</label>
         <input
           v-model="localForm.address.state"
-          :class="inputClass('state')"
+          :class="[inputClass('state'), 'input-text', disabled ? 'disabled' : 'enabled']"
           placeholder="Estado"
           :disabled="disabled"
         />
       </div>
-    </div>
+    </row>
     <slot name="actions" :submit="submit" />
   </form>
 </template>
@@ -170,50 +170,3 @@ function submit() {
   }
 }
 </script>
-
-<style scoped>
-/* Reaproveite o CSS do seu modal-form, form-group, etc */
-.modal-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.form-row {
-  display: flex;
-  gap: 12px;
-}
-.form-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-label {
-  font-size: 0.95rem;
-  color: #888;
-}
-.modal-input {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 1rem;
-  background: #fafafa;
-  transition: border 0.2s;
-}
-.modal-input:focus {
-  border-color: #3F37C9;
-  outline: none;
-}
-.modal-input.error {
-  border-color: #d32f2f;
-  background: #fff0f0;
-}
-.modal-input.disabled {
-  background: #f5f5f5;
-  color: #bbb;
-}
-.error-msg {
-  color: #d32f2f;
-  font-size: 0.85rem;
-}
-</style>

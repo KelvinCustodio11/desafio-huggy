@@ -9,10 +9,10 @@
     >
       <template #actions>
         <div class="modal-line-base"></div>
-        <div class="modal-actions">
+        <footer class="modal-actions">
           <button type="button" class="cancel-btn" @click="close">Cancelar</button>
           <button type="submit" class="save-btn" :disabled="disabled">Salvar</button>
-        </div>
+        </footer>
       </template>
     </ContactForm>
   </BaseModal>
