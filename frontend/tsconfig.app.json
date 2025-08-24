@@ -10,7 +10,9 @@
   ],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "target": "ES2015",
     "paths": {
       "@/*": ["./src/*"]
     }

@@ -1,4 +1,10 @@
 {
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "target": "ES2015"
+    // ...demais opções...
+  },
   "files": [],
   "references": [
     {

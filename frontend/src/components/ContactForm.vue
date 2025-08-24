@@ -87,7 +87,7 @@
 import { reactive, watch } from 'vue'
 
 type ContactFormData = {
-  id: string,
+  id: number|string
   name: string,
   email: string,
   phone: string,
