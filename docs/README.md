@@ -205,7 +205,6 @@ MAIL_FROM_NAME="${APP_NAME}"
 - Para integração com a Huggy, é obrigatório criar uma aplicação na plataforma Huggy e configurar as credenciais no `.env`.
 - Para webhooks, utilize o Ngrok para expor seu backend local. Lembre-se de adicionar a URL de callback para autenticacao OAuth.
 - Use a collection Postman disponível em `/docs` para testar as rotas da API, atente-se para alterar o Bearer Token da Autenticacao.
-```
 
 ---
 
