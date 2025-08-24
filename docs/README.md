@@ -196,6 +196,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 ⚠️ Substitua SEU_USERNAME_AQUI e SUA_SENHA_AQUI pelos dados do Mailtrap.
 
 <img width="697" height="385" alt="image" src="https://github.com/user-attachments/assets/986fc3ad-d7f5-4054-ac2f-d6d364d0affe" />
+
 ---
 
 ### 9. Observações
@@ -205,5 +206,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 - Para webhooks, utilize o Ngrok para expor seu backend local. Lembre-se de adicionar a URL de callback para autenticacao OAuth.
 - Use a collection Postman disponível em `/docs` para testar as rotas da API, atente-se para alterar o Bearer Token da Autenticacao.
 ```
+
 ---
+
 <img width="1291" height="713" alt="Screenshot 2025-08-23 221508" src="https://github.com/user-attachments/assets/12ea67c8-8097-44b8-8b08-95339c310137" />
